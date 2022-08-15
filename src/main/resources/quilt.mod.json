@@ -19,7 +19,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "de.macbrayne.quilt.recovery_plus.RecoveryPlus"
+			"init": "de.macbrayne.quilt.recovery_plus.RecoveryPlus",
+			"cardinal-components": "de.macbrayne.quilt.recovery_plus.components.Registration"
 		},
 		"depends": [
 			{
@@ -36,5 +37,8 @@
 			}
 		]
 	},
+	"cardinal-components": [
+		"recovery_plus:waypoints"
+	],
 	"mixin": "recovery_plus.mixins.json"
 }
