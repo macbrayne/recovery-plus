@@ -14,7 +14,8 @@
 				"issues": "https://github.com/macbrayne/recovery-plus/issues",
 				"sources": "https://github.com/macbrayne/recovery-plus"
 			},
-			"icon": "assets/recovery_plus/icon.png"
+			"icon": "assets/recovery_plus/icon.png",
+			"license": "EUPL-1.2"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
