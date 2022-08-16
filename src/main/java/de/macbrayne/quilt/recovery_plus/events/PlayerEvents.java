@@ -9,6 +9,7 @@ public class PlayerEvents {
 
 	public static void afterRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
 		final var WAYPOINTS = Registration.WAYPOINTS.get(newPlayer);
+		WAYPOINTS.setProgress(0);
 		WAYPOINTS.setLastDeath(WAYPOINTS.getWorkingCopy());
 		WAYPOINTS.setWorkingCopy(new ArrayList<>());
 	}
