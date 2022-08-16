@@ -1,7 +1,8 @@
-package de.macbrayne.quilt.recovery_plus.mixin;
+package de.macbrayne.quilt.recovery_plus.mixin.triggers;
 
 import de.macbrayne.quilt.recovery_plus.Waypoint;
 import de.macbrayne.quilt.recovery_plus.components.Registration;
+import de.macbrayne.quilt.recovery_plus.mixin.EntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,8 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(net.minecraft.world.entity.Entity.class)
-public abstract class WaypointNetherPortalMixin {
-
+public abstract class EntityHandleNetherPortalMixin {
 	@Unique
 	private static final Logger LOGGER = LoggerFactory.getLogger("recovery_plus");
 
@@ -36,8 +36,6 @@ public abstract class WaypointNetherPortalMixin {
 
 		if((Entity) (Object) this instanceof Player player) {
 			Registration.WAYPOINTS.get(player).getWorkingCopy().add(new Waypoint(GlobalPos.of(serverLevel.dimension(), getOnPos()), Waypoint.Type.NETHER_PORTAL));
-			LOGGER.info("YAY!");
-			LOGGER.error(Registration.WAYPOINTS.get(player).getWorkingCopy().toString());
 		}
 	}
 }
