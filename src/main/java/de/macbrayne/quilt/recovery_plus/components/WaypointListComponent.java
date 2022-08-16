@@ -61,6 +61,11 @@ public class WaypointListComponent implements PositionListComponent, AutoSyncedC
 	}
 
 	@Override
+	public void incrementProgress() {
+		progress++;
+	}
+
+	@Override
 	public void readFromNbt(CompoundTag tag) {
 		progress = tag.getInt("Progress");
 		lastDeath = listFromNbt(tag.getList("LastDeath", Tag.TAG_COMPOUND));

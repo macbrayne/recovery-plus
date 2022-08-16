@@ -18,4 +18,6 @@ public interface PositionListComponent extends Component {
 	void setLastDeath(List<Waypoint> lastDeath);
 
 	void setProgress(int progress);
+
+	void incrementProgress();
 }

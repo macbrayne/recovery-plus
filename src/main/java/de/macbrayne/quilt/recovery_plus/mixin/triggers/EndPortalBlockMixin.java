@@ -1,5 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.mixin.triggers;
 
+import de.macbrayne.quilt.recovery_plus.Utils;
 import de.macbrayne.quilt.recovery_plus.Waypoint;
 import de.macbrayne.quilt.recovery_plus.components.Registration;
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EndPortalBlock.class)
 public class EndPortalBlockMixin {
@@ -21,6 +21,8 @@ public class EndPortalBlockMixin {
 	void endPortalEvent(BlockState state, Level world, BlockPos pos, Entity entity, CallbackInfo ci) {
 		if(entity instanceof ServerPlayer player) {
 			Registration.WAYPOINTS.get(player).getWorkingCopy().add(new Waypoint(GlobalPos.of(world.dimension(), pos), Waypoint.Type.END_PORTAL));
+
+			Utils.doWaypointProgressionAndSync(player, world, pos);
 		}
 	}
 }
