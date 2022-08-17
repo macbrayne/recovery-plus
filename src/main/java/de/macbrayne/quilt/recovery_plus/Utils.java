@@ -28,7 +28,7 @@ public class Utils {
 		((ServerPlayerMixinTimerAccessor) player).recoveryPlus_setTimer(type, 100);
 	}
 
-	public static Component getText(Player player) {
+	public static MutableComponent getText(Player player) {
 		final var waypoints = Registry.WAYPOINTS.get(player);
 		var type = waypoints.getLastDeath().get(waypoints.getLastDeath().size() - 1).type();
 		return getText(type);

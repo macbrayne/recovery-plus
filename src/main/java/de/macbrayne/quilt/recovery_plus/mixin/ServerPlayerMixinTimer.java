@@ -29,7 +29,7 @@ public class ServerPlayerMixinTimer implements ServerPlayerMixinTimerAccessor {
 				return;
 			}
 
-			final var message = Utils.getText(messageType).withStyle(style -> style.applyFormats(ChatFormatting.ITALIC, ChatFormatting.DARK_AQUA));
+			final var message = Utils.getText(messageType);
 			((ServerPlayer) (Object) this).sendSystemMessage(message, true);
 			((ServerPlayer) (Object) this).sendSystemMessage(message, false); // DEBUG
 		}

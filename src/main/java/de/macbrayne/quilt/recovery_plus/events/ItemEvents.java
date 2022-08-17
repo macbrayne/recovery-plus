@@ -2,6 +2,7 @@ package de.macbrayne.quilt.recovery_plus.events;
 
 import de.macbrayne.quilt.recovery_plus.Utils;
 import de.macbrayne.quilt.recovery_plus.components.Registry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public class ItemEvents {
 			if(waypoints.getLastDeath().isEmpty()) {
 				return;
 			}
-			components.add(Utils.getText(player));
+			components.add(Utils.getText(player).withStyle(style -> style.applyFormats(ChatFormatting.ITALIC, ChatFormatting.DARK_AQUA)));
 		}
 	}
 }
