@@ -15,7 +15,6 @@ public class RecoveryCompassMixin {
 	@Inject(method = "m_smilstgj", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
 	private static void redirectTarget(ClientLevel world, ItemStack stack, Entity entity, CallbackInfoReturnable<GlobalPos> cir) {
 		final var waypoints = Registry.WAYPOINTS.get(entity);
-		System.out.println(waypoints.getLastDeath());
 		if(waypoints.getLastDeath().isEmpty()) {
 			cir.setReturnValue(null);
 			return;
