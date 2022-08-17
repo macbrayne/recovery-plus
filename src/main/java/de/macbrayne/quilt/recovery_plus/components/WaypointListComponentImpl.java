@@ -66,6 +66,17 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	}
 
 	@Override
+	public boolean addDeduplicatedWaypoint(ResourceKey<Level> dimension, BlockPos pos, Waypoint.Type type) {
+		final var toAdd = new Waypoint(GlobalPos.of(dimension, pos), type);
+		final var current = getWorkingCopy();
+		if(current.size() > 1 && (current.get(current.size() - 1).equals(toAdd) ||
+				current.get(current.size() - 1).isWaypointWithinRangeOf(dimension, pos, 5))) {
+			return false;
+		}
+		return current.add(toAdd);
+	}
+
+	@Override
 	public void readFromNbt(CompoundTag tag) {
 		progress = tag.getInt("Progress");
 		lastDeath = listFromNbt(tag.getList("LastDeath", Tag.TAG_COMPOUND));

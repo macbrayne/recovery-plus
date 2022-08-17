@@ -22,8 +22,8 @@ public class TheEndGatewayBlockEntityMixin {
 	private static void endGatewayEvent(Level world, BlockPos pos, BlockState state, Entity entity, TheEndGatewayBlockEntity blockEntity, CallbackInfo ci, BlockPos blockPos, Entity entity3) {
 		ServerPlayer player = (ServerPlayer) entity3;
 		final var waypoints = Registry.WAYPOINTS.get(player);
-		waypoints.getWorkingCopy().add(new Waypoint(GlobalPos.of(world.dimension(), pos), Waypoint.Type.END_GATEWAY));
+		waypoints.addDeduplicatedWaypoint(world.dimension(), pos, Waypoint.Type.END_GATEWAY);
 
-		Utils.doWaypointProgressionAndSync(player, world, pos);
+		Utils.doWaypointProgressionAndSync(player, world.dimension(), pos);
 	}
 }

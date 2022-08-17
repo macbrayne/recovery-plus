@@ -22,13 +22,13 @@ public abstract class EntityHandleNetherPortalMixin {
 
 	@Inject(method = "handleNetherPortal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;changeDimension(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/entity/Entity;"))
 	private void netherPortalEvent(CallbackInfo ci) {
-		final var serverLevel = (ServerLevel) ((EntityAccessor) this).getLevel();
 		if((Entity) (Object) this instanceof ServerPlayer player) {
+			final var serverLevel = (ServerLevel) ((EntityAccessor) this).getLevel();
 			final var entity = (EntityAccessor) (Object) this;
 			final var waypoints = Registry.WAYPOINTS.get(player);
-			waypoints.getWorkingCopy().add(new Waypoint(GlobalPos.of(serverLevel.dimension(), getOnPos()), Waypoint.Type.NETHER_PORTAL));
+			waypoints.addDeduplicatedWaypoint(serverLevel.dimension(), getOnPos(), Waypoint.Type.NETHER_PORTAL);
 
-			Utils.doWaypointProgressionAndSync(player, serverLevel, entity.getPortalEntrancePos());
+			Utils.doWaypointProgressionAndSync(player, serverLevel.dimension(), entity.getPortalEntrancePos());
 		}
 	}
 }
