@@ -8,6 +8,10 @@ import net.minecraft.world.level.Level;
 public class Utils {
 	public static void doWaypointProgressionAndSync(ServerPlayer player, Level world, BlockPos pos) {
 		final var waypoints = Registry.WAYPOINTS.get(player);
+		if(waypoints.getLastDeath().isEmpty()) {
+			return;
+		}
+
 		final var currentWaypoint = waypoints.getLastDeath().get(waypoints.getProgress());
 		if (currentWaypoint.position().dimension() == world.dimension() && currentWaypoint.position().pos().closerThan(pos, 5)) {
 			waypoints.incrementProgress();
