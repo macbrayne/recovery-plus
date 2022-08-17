@@ -8,7 +8,7 @@ import java.util.Map;
 
 public record Waypoint(GlobalPos position, Type type) {
 	public enum Type {
-		NETHER_PORTAL("minecraft:nether_portal"), END_GATEWAY("minecraft:end_gateway"), END_PORTAL("minecraft:end_portal");
+		NETHER_PORTAL("minecraft:nether_portal"), END_GATEWAY("minecraft:end_gateway"), END_PORTAL("minecraft:end_portal"), DEATH("minecraft:death");
 
 		static private final Map<String, Type> REVERSE = Maps.uniqueIndex(Arrays.asList(Type.values()), Type::getId);
 		private final String id;
