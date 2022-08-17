@@ -4,7 +4,7 @@
   "package": "de.macbrayne.quilt.recovery_plus.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "RecoveryCompassMixin",
+    "ItemPropertiesMixin",
     "triggers.EntityHandleNetherPortalMixin",
     "triggers.EndPortalBlockMixin",
     "triggers.TheEndGatewayBlockEntityMixin",

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(net.minecraft.client.renderer.item.ItemProperties.class)
-public class RecoveryCompassMixin {
+public class ItemPropertiesMixin {
 	@Inject(method = "m_smilstgj", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
 	private static void redirectTarget(ClientLevel world, ItemStack stack, Entity entity, CallbackInfoReturnable<GlobalPos> cir) {
 		final var waypoints = Registry.WAYPOINTS.get(entity);
