@@ -6,12 +6,12 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.minecraft.resources.ResourceLocation;
 
-public final class Registration implements EntityComponentInitializer {
-	public static final ComponentKey<PositionListComponent> WAYPOINTS =
-			ComponentRegistry.getOrCreate(new ResourceLocation("recovery_plus", "waypoints"), PositionListComponent.class);
+public final class Registry implements EntityComponentInitializer {
+	public static final ComponentKey<WaypointListComponent> WAYPOINTS =
+			ComponentRegistry.getOrCreate(new ResourceLocation("recovery_plus", "waypoints"), WaypointListComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerForPlayers(WAYPOINTS, WaypointListComponent::new);
+		registry.registerForPlayers(WAYPOINTS, WaypointListComponentImpl::new);
 	}
 }

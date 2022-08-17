@@ -13,7 +13,7 @@ public record Waypoint(GlobalPos position, Type type) {
 		static private final Map<String, Type> REVERSE = Maps.uniqueIndex(Arrays.asList(Type.values()), Type::getId);
 		private final String id;
 
-		private Type(String id) {
+		Type(String id) {
 			this.id = id;
 		}
 

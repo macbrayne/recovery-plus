@@ -1,7 +1,7 @@
 package de.macbrayne.quilt.recovery_plus.events;
 
 import de.macbrayne.quilt.recovery_plus.Waypoint;
-import de.macbrayne.quilt.recovery_plus.components.Registration;
+import de.macbrayne.quilt.recovery_plus.components.Registry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,7 +14,7 @@ public class PlayerEvents {
 		if(alive) {
 			return;
 		}
-		final var waypoints = Registration.WAYPOINTS.get(newPlayer);
+		final var waypoints = Registry.WAYPOINTS.get(newPlayer);
 		final var oldPos = GlobalPos.of(oldPlayer.level.dimension(), new BlockPos(oldPlayer.position()));
 		waypoints.getWorkingCopy().add(new Waypoint(oldPos, Waypoint.Type.DEATH));
 		waypoints.setProgress(0);
