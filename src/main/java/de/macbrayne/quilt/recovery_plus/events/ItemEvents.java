@@ -1,6 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.events;
 
-import de.macbrayne.quilt.recovery_plus.Utils;
+import de.macbrayne.quilt.recovery_plus.misc.Utils;
 import de.macbrayne.quilt.recovery_plus.components.Registry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

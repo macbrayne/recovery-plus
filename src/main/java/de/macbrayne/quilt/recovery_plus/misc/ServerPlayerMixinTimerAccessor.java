@@ -1,6 +1,4 @@
-package de.macbrayne.quilt.recovery_plus;
-
-import de.macbrayne.quilt.recovery_plus.Waypoint;
+package de.macbrayne.quilt.recovery_plus.misc;
 
 public interface ServerPlayerMixinTimerAccessor {
 	void recoveryPlus_setTimer(Waypoint.Type type, int ticksUntilMessage);

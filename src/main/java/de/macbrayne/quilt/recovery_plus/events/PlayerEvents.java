@@ -1,6 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.events;
 
-import de.macbrayne.quilt.recovery_plus.Waypoint;
+import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import de.macbrayne.quilt.recovery_plus.components.Registry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;

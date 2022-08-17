@@ -1,4 +1,4 @@
-package de.macbrayne.quilt.recovery_plus;
+package de.macbrayne.quilt.recovery_plus.misc;
 
 import de.macbrayne.quilt.recovery_plus.components.Registry;
 import net.minecraft.core.BlockPos;

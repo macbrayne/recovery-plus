@@ -1,6 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.components;
 
-import de.macbrayne.quilt.recovery_plus.Waypoint;
+import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import net.minecraft.core.BlockPos;

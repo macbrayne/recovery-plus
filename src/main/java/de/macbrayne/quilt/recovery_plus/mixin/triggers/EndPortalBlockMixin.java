@@ -1,10 +1,9 @@
 package de.macbrayne.quilt.recovery_plus.mixin.triggers;
 
-import de.macbrayne.quilt.recovery_plus.Utils;
-import de.macbrayne.quilt.recovery_plus.Waypoint;
+import de.macbrayne.quilt.recovery_plus.misc.Utils;
+import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import de.macbrayne.quilt.recovery_plus.components.Registry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

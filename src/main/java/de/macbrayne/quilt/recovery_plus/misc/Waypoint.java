@@ -1,4 +1,4 @@
-package de.macbrayne.quilt.recovery_plus;
+package de.macbrayne.quilt.recovery_plus.misc;
 
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
