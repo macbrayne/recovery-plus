@@ -5,11 +5,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Map;
 
-public record Waypoint(GlobalPos position, Type type) {
+public record Waypoint(GlobalPos position, @Nullable GlobalPos target, Type type) {
 	public enum Type {
 		NETHER_PORTAL("minecraft:nether_portal"), END_GATEWAY("minecraft:end_gateway"), END_PORTAL("minecraft:end_portal"), DEATH("minecraft:death");
 
@@ -29,6 +30,10 @@ public record Waypoint(GlobalPos position, Type type) {
 		}
 	}
 
+
+	public boolean isWaypointWithinRangeOf(Waypoint waypoint, double distance) {
+		return isWaypointWithinRangeOf(waypoint.position().dimension(), waypoint.position().pos(), distance);
+	}
 
 	public boolean isWaypointWithinRangeOf(ResourceKey<Level> dimension, BlockPos pos, double distance) {
 		return position().dimension() == dimension && position().pos().closerThan(pos, distance);

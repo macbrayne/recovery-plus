@@ -4,6 +4,8 @@ import de.macbrayne.quilt.recovery_plus.misc.Utils;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import de.macbrayne.quilt.recovery_plus.components.Registry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -19,7 +21,8 @@ public class EndPortalBlockMixin {
 	@Inject(method = "entityInside", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;changeDimension(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/entity/Entity;"))
 	void endPortalEvent(BlockState state, Level world, BlockPos pos, Entity entity, CallbackInfo ci) {
 		if(entity instanceof ServerPlayer player) {
-			Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint(world.dimension(), pos, Waypoint.Type.END_PORTAL);
+			ResourceKey<Level> destination = world.dimension() == Level.END ? Level.OVERWORLD : Level.END;
+			Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint(player, (ServerLevel) world, destination, pos, Waypoint.Type.END_PORTAL);
 
 			Utils.doWaypointProgressionAndSync(player, world.dimension(), pos);
 		}
