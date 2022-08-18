@@ -25,7 +25,5 @@ public interface WaypointListComponent extends Component {
 
 	void incrementProgress();
 
-	boolean addDeduplicatedWaypoint(ServerPlayer entity, ServerLevel level, ResourceKey<Level> destination, BlockPos pos, Waypoint.Type type);
-
-	boolean addDeduplicatedWaypoint(ServerPlayer entity, ServerLevel level, ResourceKey<Level> destination, BlockPos pos, BlockPos destinationBlock, Waypoint.Type type);
+	boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type);
 }

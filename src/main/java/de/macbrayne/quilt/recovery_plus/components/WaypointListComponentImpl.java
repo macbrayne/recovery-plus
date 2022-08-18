@@ -69,24 +69,16 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	}
 
 	@Override
-	public boolean addDeduplicatedWaypoint(ServerPlayer entity, ServerLevel level, ResourceKey<Level> destination, BlockPos pos, Waypoint.Type type) {
-		PortalInfo portalInfo = ((EntityAccessor)entity).invokeFindDimensionEntryPoint(level);
-		final var target = new BlockPos(portalInfo.pos);
-		return addDeduplicatedWaypoint(entity, level, destination, pos, target, type);
-	}
-
-	@Override
-	public boolean addDeduplicatedWaypoint(ServerPlayer entity, ServerLevel level, ResourceKey<Level> destination, BlockPos pos, BlockPos destinationPos, Waypoint.Type type) {
-		GlobalPos target = GlobalPos.of(destination, destinationPos);
-		final var toAdd = new Waypoint(GlobalPos.of(level.dimension(), pos), target, type);
+	public boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type) {
+		final var toAdd = new Waypoint(GlobalPos.of(level.dimension(), pos), type);
 		final var current = getWorkingCopy();
 		if(current.size() > 1 && (current.get(current.size() - 1).equals(toAdd) ||
 				current.get(current.size() - 1).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
-			return false;
+			return false; // Multiple hits of same portal
 		}
-		if(current.size() > 3 && (current.get(current.size() - 3).equals(toAdd) ||
-				current.get(current.size() - 3).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
-			return false;
+		if(current.size() > 2 && (current.get(current.size() - 2).equals(toAdd) ||
+				current.get(current.size() - 2).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
+			return false; // Going back and forth through one portal
 		}
 		return current.add(toAdd);
 	}
@@ -104,12 +96,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 			var compoundTag = listTag.getCompound(i);
 			GlobalPos pos = GlobalPos.of(dimensionFromNbt(compoundTag).get(), new BlockPos(NbtUtils.readBlockPos(compoundTag)));
 			String id = compoundTag.getString("Type");
-			final var targetTag = compoundTag.getCompound("Target");
-			GlobalPos target = null;
-			if(targetTag != null) {
-				target = GlobalPos.of(dimensionFromNbt(targetTag).get(), new BlockPos(NbtUtils.readBlockPos(targetTag)));
-			}
-			result.add(new Waypoint(pos, target, Waypoint.Type.fromId(id)));
+			result.add(new Waypoint(pos, Waypoint.Type.fromId(id)));
 		}
 		return result;
 	}
@@ -128,12 +115,6 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 			compoundTag.putString("Type", waypoint.type().getId());
 			compoundTag.merge(NbtUtils.writeBlockPos(waypoint.position().pos()));
 			Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, waypoint.position().dimension()).result().ifPresent(nbt -> compoundTag.put("Dimension", nbt));
-			if(waypoint.target() != null) {
-				var targetTag = new CompoundTag();
-				targetTag.merge(NbtUtils.writeBlockPos(waypoint.target().pos()));
-				Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, waypoint.target().dimension()).result().ifPresent(nbt -> targetTag.put("Dimension", nbt));
-				compoundTag.put("Target", targetTag);
-			}
 			listTag.add(compoundTag);
 		}
 		return listTag;
@@ -178,7 +159,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		// progress = buf.readVarInt(); // 2 progress
 		var globalPos = buf.readGlobalPos(); // 3 destination pos
 		var type = buf.readUtf(); // 4 destination type
-		var sync = new Waypoint(globalPos, null, Waypoint.Type.fromId(type));
+		var sync = new Waypoint(globalPos, Waypoint.Type.fromId(type));
 		this.lastDeath.clear();
 		this.lastDeath.add(0, sync); // Client only has 0 set!
 	}

@@ -25,10 +25,9 @@ public abstract class EntityHandleNetherPortalMixin {
 	private void netherPortalEvent(CallbackInfo ci) {
 		if((Entity) (Object) this instanceof ServerPlayer player) {
 			final var serverLevel = (ServerLevel) ((EntityAccessor) this).getLevel();
-			ResourceKey<Level> destination = serverLevel.dimension() == Level.NETHER ? Level.OVERWORLD : Level.NETHER;
 			final var entity = (EntityAccessor) this;
 			final var waypoints = Registry.WAYPOINTS.get(player);
-			waypoints.addDeduplicatedWaypoint(player, serverLevel, destination, getOnPos(), Waypoint.Type.NETHER_PORTAL);
+			waypoints.addDeduplicatedWaypoint(serverLevel, getOnPos(), Waypoint.Type.NETHER_PORTAL);
 
 			Utils.doWaypointProgressionAndSync(player, serverLevel.dimension(), entity.getPortalEntrancePos());
 		}

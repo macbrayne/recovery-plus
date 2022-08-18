@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Map;
 
-public record Waypoint(GlobalPos position, @Nullable GlobalPos target, Type type) {
+public record Waypoint(GlobalPos position, Type type) {
 	public enum Type {
 		NETHER_PORTAL("minecraft:nether_portal"), END_GATEWAY("minecraft:end_gateway"), END_PORTAL("minecraft:end_portal"), DEATH("minecraft:death");
 

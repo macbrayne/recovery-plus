@@ -21,8 +21,7 @@ public class EndPortalBlockMixin {
 	@Inject(method = "entityInside", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;changeDimension(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/entity/Entity;"))
 	void endPortalEvent(BlockState state, Level world, BlockPos pos, Entity entity, CallbackInfo ci) {
 		if(entity instanceof ServerPlayer player) {
-			ResourceKey<Level> destination = world.dimension() == Level.END ? Level.OVERWORLD : Level.END;
-			Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint(player, (ServerLevel) world, destination, pos, Waypoint.Type.END_PORTAL);
+			Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint((ServerLevel) world, pos, Waypoint.Type.END_PORTAL);
 
 			Utils.doWaypointProgressionAndSync(player, world.dimension(), pos);
 		}
