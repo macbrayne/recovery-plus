@@ -6,7 +6,7 @@
 		"version": "${version}",
 		"metadata": {
 			"name": "Recovery Plus",
-			"description": "A short description of your mod.",
+			"description": "Adds a smarter recovery compass with waypoints",
 			"contributors": {
 				"macbrayne": "Owner"
 			},
@@ -20,8 +20,7 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"init": "de.macbrayne.quilt.recovery_plus.RecoveryPlus",
-			"cardinal-components": "de.macbrayne.quilt.recovery_plus.components.Registry",
-			"fabric-datagen": "de.macbrayne.quilt.recovery_plus.datagen.DataGenEntrypoint"
+			"cardinal-components": "de.macbrayne.quilt.recovery_plus.components.Registry"
 		},
 		"depends": [
 			{

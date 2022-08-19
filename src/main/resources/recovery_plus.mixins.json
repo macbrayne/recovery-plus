@@ -8,8 +8,7 @@
     "triggers.EndPortalBlockMixin",
     "triggers.TheEndGatewayBlockEntityMixin",
     "EntityAccessor",
-    "ServerPlayerMixinTimer",
-    "ItemModelGeneratorsAccessor"
+    "ServerPlayerMixinTimer"
   ],
   "client": [],
   "injectors": {
