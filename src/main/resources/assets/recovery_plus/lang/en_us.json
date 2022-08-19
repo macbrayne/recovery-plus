@@ -1,4 +1,5 @@
 {
+  "item.recovery_plus.smart_recovery_compass": "Recovery Compass",
   "item.recovery_plus.recovery_compass.navigating": "Navigating to %s",
   "item.recovery_plus.recovery_compass.type.minecraft:nether_portal": "Nether Portal",
   "item.recovery_plus.recovery_compass.type.minecraft:end_portal": "End Portal",

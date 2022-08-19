@@ -20,7 +20,8 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"init": "de.macbrayne.quilt.recovery_plus.RecoveryPlus",
-			"cardinal-components": "de.macbrayne.quilt.recovery_plus.components.Registry"
+			"cardinal-components": "de.macbrayne.quilt.recovery_plus.components.Registry",
+			"fabric-datagen": "de.macbrayne.quilt.recovery_plus.datagen.DataGenEntrypoint"
 		},
 		"depends": [
 			{

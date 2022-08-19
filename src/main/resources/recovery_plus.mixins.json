@@ -4,12 +4,12 @@
   "package": "de.macbrayne.quilt.recovery_plus.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ItemPropertiesMixin",
     "triggers.EntityHandleNetherPortalMixin",
     "triggers.EndPortalBlockMixin",
     "triggers.TheEndGatewayBlockEntityMixin",
     "EntityAccessor",
-    "ServerPlayerMixinTimer"
+    "ServerPlayerMixinTimer",
+    "ItemModelGeneratorsAccessor"
   ],
   "client": [],
   "injectors": {
