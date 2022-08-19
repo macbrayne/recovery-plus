@@ -3,10 +3,7 @@ package de.macbrayne.quilt.recovery_plus.components;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 

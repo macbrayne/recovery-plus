@@ -1,7 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.components;
 
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
-import de.macbrayne.quilt.recovery_plus.mixin.EntityAccessor;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import net.minecraft.core.BlockPos;
@@ -12,7 +11,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.PortalInfo;
 
 import java.util.ArrayList;
 import java.util.List;
