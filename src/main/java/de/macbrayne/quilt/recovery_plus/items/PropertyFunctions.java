@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class PropertyFunctions {
-	public static GlobalPos getPropertyFunction(ClientLevel clientLevel, ItemStack itemStack, Entity entity) {
+	public static GlobalPos getRecoveryCompassPosition(ClientLevel clientLevel, ItemStack itemStack, Entity entity) {
 		if(!(entity instanceof Player)) {
 			return null;
 		}

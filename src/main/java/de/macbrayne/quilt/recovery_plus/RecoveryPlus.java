@@ -19,13 +19,8 @@ public class RecoveryPlus implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
-		final var smartRecoveryCompassLocation = locationOf("smart_recovery_compass");
-		Registry.register(Registry.ITEM, smartRecoveryCompassLocation, SMART_RECOVERY_COMPASS);
-		ItemProperties.register(SMART_RECOVERY_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction(PropertyFunctions::getPropertyFunction));
+		Registry.register(Registry.ITEM, new ResourceLocation("recovery_plus", "smart_recovery_compass"), SMART_RECOVERY_COMPASS);
 		AFTER_RESPAWN.register(PlayerEvents::afterRespawn);
 	}
 
-	ResourceLocation locationOf(String id) {
-		return new ResourceLocation("recovery_plus", id);
-	}
 }
