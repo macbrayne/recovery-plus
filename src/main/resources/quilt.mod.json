@@ -6,7 +6,7 @@
 		"version": "${version}",
 		"metadata": {
 			"name": "Recovery Plus",
-			"description": "Adds a smarter recovery compass with waypoints",
+			"description": "A smarter recovery compass with waypoints",
 			"contributors": {
 				"macbrayne": "Owner"
 			},
