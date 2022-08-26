@@ -16,16 +16,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(net.minecraft.world.entity.Entity.class)
 public abstract class EntityHandleNetherPortalMixin {
-	@Shadow
-	public abstract BlockPos getOnPos();
-
 	@Inject(method = "handleNetherPortal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;changeDimension(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/entity/Entity;"))
 	private void netherPortalEvent(CallbackInfo ci) {
 		if((Entity) (Object) this instanceof ServerPlayer player) {
 			final var serverLevel = (ServerLevel) ((EntityAccessor) this).getLevel();
 			final var entity = (EntityAccessor) this;
 			final var waypoints = Registry.WAYPOINTS.get(player);
-			waypoints.addDeduplicatedWaypoint(serverLevel, getOnPos(), Waypoint.Type.NETHER_PORTAL);
+			waypoints.addDeduplicatedWaypoint(serverLevel, entity.getPortalEntrancePos(), Waypoint.Type.NETHER_PORTAL);
 
 			Utils.doWaypointProgressionAndSync(player, serverLevel.dimension(), entity.getPortalEntrancePos());
 		}

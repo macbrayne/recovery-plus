@@ -1,10 +1,7 @@
 package de.macbrayne.quilt.recovery_plus;
 
 import de.macbrayne.quilt.recovery_plus.events.PlayerEvents;
-import de.macbrayne.quilt.recovery_plus.items.PropertyFunctions;
 import de.macbrayne.quilt.recovery_plus.items.SmartRecoveryCompass;
-import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;

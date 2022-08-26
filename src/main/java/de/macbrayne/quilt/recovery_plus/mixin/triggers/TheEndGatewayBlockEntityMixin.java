@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,11 +21,12 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class TheEndGatewayBlockEntityMixin {
 	@Inject(method = "teleportEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;teleportToWithTicket(DDD)V"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void endGatewayEvent(Level world, BlockPos pos, BlockState state, Entity entity, TheEndGatewayBlockEntity blockEntity, CallbackInfo ci, BlockPos blockPos, Entity entity3) {
-		ServerPlayer player = (ServerPlayer) entity3;
-		final var serverWorld = (ServerLevel) world;
-		final var waypoints = Registry.WAYPOINTS.get(player);
-		waypoints.addDeduplicatedWaypoint(serverWorld, pos, Waypoint.Type.END_GATEWAY);
+		if(entity3 instanceof ServerPlayer player) {
+			final var serverWorld = (ServerLevel) world;
+			final var waypoints = Registry.WAYPOINTS.get(player);
+			waypoints.addDeduplicatedWaypoint(serverWorld, pos, Waypoint.Type.END_GATEWAY);
 
-		Utils.doWaypointProgressionAndSync(player, world.dimension(), pos);
+			Utils.doWaypointProgressionAndSync(player, world.dimension(), pos);
+		}
 	}
 }
