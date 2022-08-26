@@ -10,19 +10,23 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class WaypointListComponentImpl implements WaypointListComponent, AutoSyncedComponent, PlayerComponent<WaypointListComponent> {
-	private final Object provider;
+	public static final Logger LOGGER = LoggerFactory.getLogger("recovery_plus");
+	private final Player provider;
 	int progress = 0;
 	private List<Waypoint> lastDeath = new ArrayList<>();
 	private List<Waypoint> workingCopy = new ArrayList<>(); // Server Only
 
-	public WaypointListComponentImpl(Object provider) {
+	public WaypointListComponentImpl(Player provider) {
 		this.provider = provider;
 	}
 
@@ -70,14 +74,18 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	public boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type) {
 		final var toAdd = new Waypoint(GlobalPos.of(level.dimension(), pos), type);
 		final var current = getWorkingCopy();
+		LOGGER.debug("Try adding " + toAdd + " to " + provider.getDisplayName().getString() + "'s working set:");
 		if(current.size() > 1 && (current.get(current.size() - 1).equals(toAdd) ||
 				current.get(current.size() - 1).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
+			LOGGER.debug("Failed, multiple hits of the same portal");
 			return false; // Multiple hits of same portal
 		}
 		if(current.size() > 2 && (current.get(current.size() - 2).equals(toAdd) ||
 				current.get(current.size() - 2).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
+			LOGGER.debug("Failed, two-segment-loop detected");
 			return false; // Going back and forth through one portal
 		}
+		LOGGER.debug("Success, length of working set: " + current.size());
 		return current.add(toAdd);
 	}
 
@@ -136,29 +144,28 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	@Override
 	public void writeSyncPacket(FriendlyByteBuf buf, ServerPlayer recipient) {
 		if(this.lastDeath.isEmpty()) {
-			buf.writeBoolean(true); // Reset list!
+			buf.writeBoolean(true); // Reset!
 			return;
 		}
-		buf.writeBoolean(false); // 1 Don't reset list
-
+		buf.writeBoolean(false); // 1 Don't reset
 		var sync = this.lastDeath.get(this.progress); // Only sync next destination
-		// buf.writeVarInt(progress); // 2 progress
-		buf.writeGlobalPos(sync.position()); // 3 destination pos
-		buf.writeUtf(sync.type().getId()); // 4 destination type
+		buf.writeGlobalPos(sync.position()); // 2 destination pos
+		buf.writeUtf(sync.type().getId()); // 3 destination type
+		LOGGER.debug("Synced " + sync + " to " + recipient.getDisplayName().getString());
 	}
 
 	@Override
 	public void applySyncPacket(FriendlyByteBuf buf) {
-		if(buf.readBoolean()) { // 1 clear?
+		if(buf.readBoolean()) { // 1 Reset?
 			lastDeath.clear();
 			this.progress = 0;
 			return;
 		}
-		// progress = buf.readVarInt(); // 2 progress
-		var globalPos = buf.readGlobalPos(); // 3 destination pos
-		var type = buf.readUtf(); // 4 destination type
+		var globalPos = buf.readGlobalPos(); // 2 destination pos
+		var type = buf.readUtf(); // 3 destination type
 		var sync = new Waypoint(globalPos, Waypoint.Type.fromId(type));
 		this.lastDeath.clear();
 		this.lastDeath.add(0, sync); // Client only has 0 set!
+		LOGGER.debug("Synced " + sync + " from server");
 	}
 }

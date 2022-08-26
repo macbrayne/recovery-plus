@@ -8,8 +8,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Utils {
+	public static final Logger LOGGER = LoggerFactory.getLogger("recovery_plus");
 	public static void doWaypointProgressionAndSync(ServerPlayer player, ResourceKey<Level> dimension, BlockPos pos) {
 		final var waypoints = Registry.WAYPOINTS.get(player);
 		if(waypoints.getLastDeath().isEmpty()) {
@@ -22,6 +25,8 @@ public class Utils {
 			Registry.WAYPOINTS.sync(player);
 			announceProgress(player, currentWaypoint.type());
 		}
+		LOGGER.debug("Synced waypoint at " + pos.toShortString() + " located in " + dimension.toString() + " to " + player.getDisplayName().getString());
+
 	}
 
 	public static void announceProgress(ServerPlayer player, Waypoint.Type type) {
