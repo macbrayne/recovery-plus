@@ -12,5 +12,6 @@ public class RecoveryPlusClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		ItemProperties.register(RecoveryPlus.SMART_RECOVERY_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction(PropertyFunctions::getRecoveryCompassPosition));
+		ItemProperties.register(RecoveryPlus.MAGNETIC_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction(PropertyFunctions::getMagneticCompassPosition));
 	}
 }

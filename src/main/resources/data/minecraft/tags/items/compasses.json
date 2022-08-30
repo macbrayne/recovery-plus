@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "recovery_plus:smart_recovery_compass"
+    "recovery_plus:smart_recovery_compass",
+    "recovery_plus:magnetic_compass"
   ]
 }
