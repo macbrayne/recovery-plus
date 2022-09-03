@@ -39,7 +39,8 @@
 		]
 	},
 	"cardinal-components": [
-		"recovery_plus:waypoints"
+		"recovery_plus:waypoints",
+		"recovery_plus:tracked_entities"
 	],
 	"mixin": "recovery_plus.mixins.json"
 }

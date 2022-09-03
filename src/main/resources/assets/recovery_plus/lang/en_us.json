@@ -5,5 +5,7 @@
   "item.recovery_plus.recovery_compass.type.minecraft:end_gateway": "End Gateway",
   "item.recovery_plus.recovery_compass.type.minecraft:death": "Point of Death",
   "item.recovery_plus.magnetic_compass": "Magnetic Compass",
-  "item.recovery_plus.magnetic_compass.navigating": "Follows the world's magnetic field"
+  "item.recovery_plus.magnetic_compass.navigating": "Follows the world's magnetic field",
+  "item.recovery_plus.entity_compass": "Entity Compass",
+  "item.recovery_plus.entity_compass.navigating": "Navigating to %s"
 }

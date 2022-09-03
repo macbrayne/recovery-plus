@@ -35,6 +35,9 @@ public class Utils {
 
 	public static MutableComponent getText(Player player) {
 		final var waypoints = Registry.WAYPOINTS.get(player);
+		if(waypoints.getLastDeath().isEmpty()) {
+			return Component.empty();
+		}
 		var type = waypoints.getLastDeath().get(waypoints.getLastDeath().size() - 1).type();
 		return getText(type);
 	}

@@ -18,11 +18,12 @@ quilted_fabric_api_deprecated = { module = "org.quiltmc.quilted-fabric-api:quilt
 
 cardinal_components_api_base = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-base", version.ref = "cardinal_components_api" }
 cardinal_components_api_entity = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-entity", version.ref = "cardinal_components_api" }
+cardinal_components_api_scoreboard = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-scoreboard", version.ref = "cardinal_components_api" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
 quilted_fabric_api = ["quilted_fabric_api", "quilted_fabric_api_deprecated"]
-cardinal_components_api = ["cardinal_components_api_base", "cardinal_components_api_entity"]
+cardinal_components_api = ["cardinal_components_api_base", "cardinal_components_api_entity", "cardinal_components_api_scoreboard"]
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "0.12.+" }

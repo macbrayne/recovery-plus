@@ -1,37 +1,33 @@
 package de.macbrayne.quilt.recovery_plus.items;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import de.macbrayne.quilt.recovery_plus.items.base.BaseCompass;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static de.macbrayne.quilt.recovery_plus.items.PropertyFunctions.getMagneticCompassPosition;
-
-public class MagneticCompass extends Item {
+public class MagneticCompass extends BaseCompass {
 	public MagneticCompass(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag context) {
-		super.appendHoverText(stack, world, tooltip, context);
-		Player player = Minecraft.getInstance().player;
-		var text = Component.translatable("item.recovery_plus.magnetic_compass.navigating", getMagneticCompassPosition((ClientLevel) world, stack, player));
-		tooltip.add(text.withStyle(style -> style.applyFormats(ChatFormatting.ITALIC, ChatFormatting.DARK_AQUA)));
+	public MutableComponent getHoverComponent(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag context) {
+		return Component.translatable("item.recovery_plus.magnetic_compass.navigating");
 	}
 
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return Rarity.RARE;
+
+	public static GlobalPos getCompassPosition(ClientLevel clientLevel, ItemStack itemStack, Entity entity) {
+		if(clientLevel == null) {
+			return null;
+		}
+		return GlobalPos.of(clientLevel.dimension(), entity.blockPosition().north(10));
 	}
 }
