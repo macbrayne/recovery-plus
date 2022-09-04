@@ -28,6 +28,9 @@ public class SmartRecoveryCompass extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag context) {
 		super.appendHoverText(stack, world, tooltip, context);
 		Player player = Minecraft.getInstance().player;
+		if(player == null) {
+			return;
+		}
 		final var waypoints = Registry.WAYPOINTS.get(player);
 		if(waypoints.getLastDeath().isEmpty()) {
 			return;
