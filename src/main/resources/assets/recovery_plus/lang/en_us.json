@@ -3,5 +3,6 @@
   "item.recovery_plus.recovery_compass.type.minecraft:nether_portal": "Nether Portal",
   "item.recovery_plus.recovery_compass.type.minecraft:end_portal": "End Portal",
   "item.recovery_plus.recovery_compass.type.minecraft:end_gateway": "End Gateway",
-  "item.recovery_plus.recovery_compass.type.minecraft:death": "Point of Death"
+  "item.recovery_plus.recovery_compass.type.minecraft:death": "Point of Death",
+  "block.recovery_plus.clear_working_set": "Clear Working Set (Modfest Util)"
 }
