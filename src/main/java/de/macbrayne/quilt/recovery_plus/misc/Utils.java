@@ -20,17 +20,18 @@ public class Utils {
 		}
 
 		final var currentWaypoint = waypoints.getLastDeath().get(waypoints.getProgress());
-		if (currentWaypoint.isWaypointWithinRangeOf(dimension, pos, 5)) {
+		if (currentWaypoint.isWaypointWithinRangeOf(dimension, pos, 5) && waypoints.getLastDeath().size() > waypoints.getProgress() + 1) {
 			waypoints.incrementProgress();
 			Registry.WAYPOINTS.sync(player);
-			announceProgress(player, currentWaypoint.type());
+			final var newWaypoint = waypoints.getLastDeath().get(waypoints.getProgress());
+			announceProgress(player, newWaypoint.type());
 		}
 		LOGGER.debug("Synced waypoint at " + pos.toShortString() + " located in " + dimension.toString() + " to " + player.getDisplayName().getString());
 
 	}
 
 	public static void announceProgress(ServerPlayer player, Waypoint.Type type) {
-		((ServerPlayerMixinTimerAccessor) player).recoveryPlus_setTimer(type, 100);
+		((ServerPlayerMixinTimerAccessor) player).recoveryPlus_setTimer(type, 60);
 	}
 
 	public static MutableComponent getText(Player player) {
