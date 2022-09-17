@@ -61,7 +61,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		this.progress = progress;
 	}
 
-	public Object getProvider() {
+	public Player getProvider() {
 		return provider;
 	}
 
@@ -131,6 +131,19 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		return sameCharacter;
 	}
 
+	@Override
+	public void copyForRespawn(WaypointListComponent original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
+		var oldPlayer = original.getProvider();
+		PlayerComponent.super.copyForRespawn(original, lossless, keepInventory, sameCharacter);
+		if(lossless) {
+			return;
+		}
+		final var oldPos = GlobalPos.of(oldPlayer.level.dimension(), new BlockPos(oldPlayer.position()));
+		getWorkingCopy().add(new Waypoint(oldPos, Waypoint.Type.DEATH));
+		setProgress(0);
+		setLastDeath(getWorkingCopy());
+		setWorkingCopy(new ArrayList<>());
+	}
 
 	private static Optional<ResourceKey<Level>> dimensionFromNbt(CompoundTag nbt) {
 		return Level.RESOURCE_KEY_CODEC.parse(NbtOps.INSTANCE, nbt.get("Dimension")).result();
@@ -168,4 +181,6 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		this.lastDeath.add(0, sync); // Client only has 0 set!
 		LOGGER.debug("Synced " + sync + " from server");
 	}
+
+
 }
