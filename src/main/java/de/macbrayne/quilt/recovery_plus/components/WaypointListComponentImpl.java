@@ -92,7 +92,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	}
 
 	private static boolean doWaypointsMatch(Waypoint one, Waypoint theOther) {
-		return one.equals(theOther) || (one.isWaypointWithinRangeOf(one.position().dimension(), one.position().pos(), 5) && one.type() == theOther.type());
+		return one.equals(theOther) || (one.isWaypointWithinRangeOf(theOther.position().dimension(), theOther.position().pos(), 5) && one.type() == theOther.type());
 	}
 
 	@Override

@@ -3,12 +3,10 @@ package de.macbrayne.quilt.recovery_plus.components;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
-import net.minecraft.world.Nameable;
 import net.minecraft.world.level.Level;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +58,16 @@ public class WaypointListComponentImplTest {
 
 		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Empty list should not trigger dedup");
 		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Duplicated waypoint should trigger dedup");
-		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.END_GATEWAY, entity), "Waypoint in different dimension should not trigger dedup");
+		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Waypoint in different dimension should not trigger dedup");
+	}
+
+	@Test
+	void loopedWaypoints() {
+		final var list = new ArrayList<Waypoint>();
+		final var entity = new FakeEntity("LoopedWaypointsTest");
+
+		WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Two-segment-loop should not be added");
 	}
 }
