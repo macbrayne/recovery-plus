@@ -21,7 +21,9 @@ public class Deduplication {
 			return false; // Multiple hits of same portal
 		}
 		if(current.size() >= 2 && doWaypointsMatch(current.get(current.size() - 2), toAdd)) {
-			LOGGER.debug("Failed, two-segment-loop detected");
+			current.remove(current.size() - 1);
+			current.remove(current.size() - 1);
+			LOGGER.debug("Failed, two-segment-loop detected, removing loop; new length of working set: " + current.size() + "; removed 2 entries");
 			return false; // Going back and forth through one portal
 		}
 		LOGGER.debug("Success, length of working set: " + current.size());

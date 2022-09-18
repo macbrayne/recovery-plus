@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeduplicationTest {
 	final ResourceKey<Registry<Level>> DIMENSION_REGISTRY;
@@ -64,10 +63,13 @@ public class DeduplicationTest {
 	void loopedWaypoints() {
 		final var list = new ArrayList<Waypoint>();
 		final var entity = new FakeEntity("LoopedWaypointsTest");
+		Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.END_PORTAL, entity);
 
+		int previousSize = list.size();
 		Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
 		Deduplication.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
 		assertFalse(Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Two-segment-loop should not be added");
+		assertEquals(list.size(), previousSize, "Looping should return the working set to previous size");
 	}
 	//endregion
 }
