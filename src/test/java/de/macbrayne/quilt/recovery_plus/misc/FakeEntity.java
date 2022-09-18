@@ -1,4 +1,4 @@
-package de.macbrayne.quilt.recovery_plus.components;
+package de.macbrayne.quilt.recovery_plus.misc;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;

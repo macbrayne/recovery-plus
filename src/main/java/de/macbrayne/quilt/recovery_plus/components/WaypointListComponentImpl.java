@@ -1,5 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.components;
 
+import de.macbrayne.quilt.recovery_plus.misc.Deduplication;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
@@ -10,7 +11,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
@@ -73,26 +73,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 
 	@Override
 	public boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type) {
-		return addDeduplicatedWaypoint(getWorkingCopy(), level.dimension(), pos, type, getProvider());
-	}
-
-	public static boolean addDeduplicatedWaypoint(List<Waypoint> current, ResourceKey<Level> dimension, BlockPos pos, Waypoint.Type type, Nameable provider) {
-		final var toAdd = new Waypoint(GlobalPos.of(dimension, pos), type);
-		LOGGER.debug("Try adding " + toAdd + " to " + provider.getDisplayName().getString() + "'s working set:");
-		if(current.size() >= 1 && doWaypointsMatch(current.get(current.size() - 1), toAdd)) {
-			LOGGER.debug("Failed, multiple hits of the same portal");
-			return false; // Multiple hits of same portal
-		}
-		if(current.size() >= 2 && doWaypointsMatch(current.get(current.size() - 2), toAdd)) {
-			LOGGER.debug("Failed, two-segment-loop detected");
-			return false; // Going back and forth through one portal
-		}
-		LOGGER.debug("Success, length of working set: " + current.size());
-		return current.add(toAdd);
-	}
-
-	private static boolean doWaypointsMatch(Waypoint one, Waypoint theOther) {
-		return one.equals(theOther) || (one.isWaypointWithinRangeOf(theOther.position().dimension(), theOther.position().pos(), 5) && one.type() == theOther.type());
+		return Deduplication.addDeduplicatedWaypoint(getWorkingCopy(), level.dimension(), pos, type, getProvider());
 	}
 
 	@Override
