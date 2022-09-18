@@ -37,7 +37,7 @@ public class WaypointListComponentImplTest {
 		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Duplicated waypoint should trigger dedup");
 
 		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.END_GATEWAY, entity), "Different Waypoint type should not trigger dedup");
-		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.END_GATEWAY, entity), "Duplicated Waypoint type should not trigger dedup");
+		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.END_GATEWAY, entity), "Duplicated Waypoint should trigger dedup");
 	}
 
 
@@ -46,9 +46,9 @@ public class WaypointListComponentImplTest {
 		final var list = new ArrayList<Waypoint>();
 		final var entity = new FakeEntity("DistantWaypointsTest");
 
-		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Empty list should not trigger dedup");
-		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Duplicated waypoint should trigger dedup");
-		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, new BlockPos(10, 10, 10), Waypoint.Type.END_GATEWAY, entity), "Waypoint outside of radius should not trigger dedup");
+		WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, new BlockPos(10, 10, 10), Waypoint.Type.NETHER_PORTAL, entity), "Waypoint outside of radius should not trigger dedup");
 	}
 
 	@Test
@@ -56,8 +56,8 @@ public class WaypointListComponentImplTest {
 		final var list = new ArrayList<Waypoint>();
 		final var entity = new FakeEntity("DifferentDimensionsTest");
 
-		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Empty list should not trigger dedup");
-		assertFalse(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Duplicated waypoint should trigger dedup");
+		WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
 		assertTrue(WaypointListComponentImpl.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Waypoint in different dimension should not trigger dedup");
 	}
 
