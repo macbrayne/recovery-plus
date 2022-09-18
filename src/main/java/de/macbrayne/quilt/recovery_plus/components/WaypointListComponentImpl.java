@@ -10,6 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
@@ -72,16 +73,19 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 
 	@Override
 	public boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type) {
-		final var toAdd = new Waypoint(GlobalPos.of(level.dimension(), pos), type);
-		final var current = getWorkingCopy();
+		return addDeduplicatedWaypoint(getWorkingCopy(), level.dimension(), pos, type, getProvider());
+	}
+
+	public static boolean addDeduplicatedWaypoint(List<Waypoint> current, ResourceKey<Level> dimension, BlockPos pos, Waypoint.Type type, Nameable provider) {
+		final var toAdd = new Waypoint(GlobalPos.of(dimension, pos), type);
 		LOGGER.debug("Try adding " + toAdd + " to " + provider.getDisplayName().getString() + "'s working set:");
-		if(current.size() > 1 && (current.get(current.size() - 1).equals(toAdd) ||
-				current.get(current.size() - 1).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
+		if(current.size() >= 1 && (current.get(current.size() - 1).equals(toAdd) ||
+				current.get(current.size() - 1).isWaypointWithinRangeOf(dimension, pos, 5))) {
 			LOGGER.debug("Failed, multiple hits of the same portal");
 			return false; // Multiple hits of same portal
 		}
-		if(current.size() > 2 && (current.get(current.size() - 2).equals(toAdd) ||
-				current.get(current.size() - 2).isWaypointWithinRangeOf(level.dimension(), pos, 5))) {
+		if(current.size() >= 2 && (current.get(current.size() - 2).equals(toAdd) ||
+				current.get(current.size() - 2).isWaypointWithinRangeOf(dimension, pos, 5))) {
 			LOGGER.debug("Failed, two-segment-loop detected");
 			return false; // Going back and forth through one portal
 		}

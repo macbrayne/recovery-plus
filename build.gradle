@@ -37,6 +37,17 @@ dependencies {
 	modImplementation libs.bundles.cardinal.components.api
 	include libs.bundles.cardinal.components.api
 
+
+	testImplementation(platform('org.junit:junit-bom:5.9.0'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
+}
+
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }
 
 processResources {
