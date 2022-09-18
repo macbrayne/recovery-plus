@@ -79,18 +79,20 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	public static boolean addDeduplicatedWaypoint(List<Waypoint> current, ResourceKey<Level> dimension, BlockPos pos, Waypoint.Type type, Nameable provider) {
 		final var toAdd = new Waypoint(GlobalPos.of(dimension, pos), type);
 		LOGGER.debug("Try adding " + toAdd + " to " + provider.getDisplayName().getString() + "'s working set:");
-		if(current.size() >= 1 && (current.get(current.size() - 1).equals(toAdd) ||
-				current.get(current.size() - 1).isWaypointWithinRangeOf(dimension, pos, 5))) {
+		if(current.size() >= 1 && doWaypointsMatch(current.get(current.size() - 1), toAdd)) {
 			LOGGER.debug("Failed, multiple hits of the same portal");
 			return false; // Multiple hits of same portal
 		}
-		if(current.size() >= 2 && (current.get(current.size() - 2).equals(toAdd) ||
-				current.get(current.size() - 2).isWaypointWithinRangeOf(dimension, pos, 5))) {
+		if(current.size() >= 2 && doWaypointsMatch(current.get(current.size() - 2), toAdd)) {
 			LOGGER.debug("Failed, two-segment-loop detected");
 			return false; // Going back and forth through one portal
 		}
 		LOGGER.debug("Success, length of working set: " + current.size());
 		return current.add(toAdd);
+	}
+
+	private static boolean doWaypointsMatch(Waypoint one, Waypoint theOther) {
+		return one.equals(theOther) || (one.isWaypointWithinRangeOf(one.position().dimension(), one.position().pos(), 5) && one.type() == theOther.type());
 	}
 
 	@Override
