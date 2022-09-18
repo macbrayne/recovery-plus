@@ -59,10 +59,18 @@ jobs:
         run: chmod +x gradlew
 
       - name: 🔨 Build artifacts
-        run: ./gradlew clean build
+        run: ./gradlew clean build test
+
+
+      - name: 🐱‍💻 Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
 
       - name: 📦 Upload artifacts
         uses: actions/upload-artifact@v2
+        if: always() # always run even if the previous step fails
         with:
           name: artifacts
           path: '**/build/libs/'
