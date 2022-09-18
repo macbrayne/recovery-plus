@@ -69,7 +69,23 @@ public class DeduplicationTest {
 		Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
 		Deduplication.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
 		assertFalse(Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Two-segment-loop should not be added");
-		assertEquals(list.size(), previousSize, "Looping should return the working set to previous size");
+		assertEquals(list.size(), previousSize + 1, "Looping should return the working set to previous size");
 	}
 	//endregion
+
+	@Test
+	void bigLoopedWaypoints() {
+		final var list = new ArrayList<Waypoint>();
+		final var entity = new FakeEntity("LoopedWaypointsTest");
+		final var otherBlockPos = new BlockPos(100, 100, 100);
+		Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.END_PORTAL, entity);
+
+		int previousSize = list.size();
+		Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		Deduplication.addDeduplicatedWaypoint(list, THE_NETHER, otherBlockPos, Waypoint.Type.NETHER_PORTAL, entity);
+		Deduplication.addDeduplicatedWaypoint(list, THE_END, otherBlockPos, Waypoint.Type.NETHER_PORTAL, entity);
+		Deduplication.addDeduplicatedWaypoint(list, THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity);
+		assertFalse(Deduplication.addDeduplicatedWaypoint(list, THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL, entity), "Four-segment-loop should not be added");
+		assertEquals(list.size(), previousSize + 1, "Looping should return the working set to previous size");
+	}
 }

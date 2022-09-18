@@ -23,11 +23,26 @@ public class Deduplication {
 		if(current.size() >= 2 && doWaypointsMatch(current.get(current.size() - 2), toAdd)) {
 			current.remove(current.size() - 1);
 			current.remove(current.size() - 1);
-			LOGGER.debug("Failed, two-segment-loop detected, removing loop; new length of working set: " + current.size() + "; removed 2 entries");
-			return false; // Going back and forth through one portal
+			LOGGER.debug("Two-segment-loop detected, removing loop; new length of working set: " + current.size() + "; removed 2 entries");
+			// Going back and forth through one portal, E.g. Overworld [gone] -> Nether [gone] -> Overworld
+			current.add(toAdd);
+			LOGGER.debug("Success, length of working set: " + current.size());
+			return false;
 		}
+		if(current.size() >= 4 && doWaypointsMatch(current.get(current.size() - 4), toAdd)) {
+			current.remove(current.size() - 1);
+			current.remove(current.size() - 1);
+			current.remove(current.size() - 1);
+			current.remove(current.size() - 1);
+			LOGGER.debug("Tour-segment-loop detected, removing loop; new length of working set: " + current.size() + "; removed 4 entries");
+			// E.g. Overworld (Portal 1) [gone] -> Nether [gone] -> Overworld (Portal 2) [gone] -> Nether [gone] -> Overworld (Portal 1)
+			current.add(toAdd);
+			LOGGER.debug("Success, length of working set: " + current.size());
+			return false;
+		}
+		current.add(toAdd);
 		LOGGER.debug("Success, length of working set: " + current.size());
-		return current.add(toAdd);
+		return true;
 	}
 
 	public static boolean doWaypointsMatch(Waypoint one, Waypoint theOther) {
