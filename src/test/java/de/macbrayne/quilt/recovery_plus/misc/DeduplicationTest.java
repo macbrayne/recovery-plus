@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.macbrayne.quilt.recovery_plus.misc.Waypoint.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeduplicationTest {
@@ -31,74 +32,70 @@ public class DeduplicationTest {
 	@Test
 	void duplicatedWaypoints() {
 		final var list = new ArrayList<Waypoint>();
-		final var entity = new FakeEntity("DuplicatedWaypointsTest");
-		final var config = new DedupConfig(list, entity);
+		final var helper = new DedupConfig(list, new FakeEntity("DuplicatedWaypointsTest"));
 
-		assertTrue(config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL), "Empty list should not trigger dedup");
-		assertFalse(config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL), "Duplicated waypoint should trigger dedup");
+		assertTrue(helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL), "Empty list should not trigger dedup");
+		assertFalse(helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL), "Duplicated waypoint should trigger dedup");
 
-		assertTrue(config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.END_GATEWAY), "Different Waypoint type should not trigger dedup");
-		assertFalse(config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.END_GATEWAY), "Duplicated Waypoint should trigger dedup");
+		assertTrue(helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.END_GATEWAY), "Different Waypoint type should not trigger dedup");
+		assertFalse(helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.END_GATEWAY), "Duplicated Waypoint should trigger dedup");
 	}
 
 	@Test
 	void distantWaypoints() {
 		final var list = new ArrayList<Waypoint>();
-		final var entity = new FakeEntity("DistantWaypointsTest");
-		final var config = new DedupConfig(list, entity);
+		final var helper = new DedupConfig(list, new FakeEntity("DistantWaypointsTest"));
 
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		assertTrue(config.addDedupWaypoint(THE_END, new BlockPos(10, 10, 10), Waypoint.Type.NETHER_PORTAL), "Waypoint outside of radius should not trigger dedup");
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL);
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL);
+		assertTrue(helper.addDedupWaypoint(THE_END, new BlockPos(10, 10, 10), Type.NETHER_PORTAL), "Waypoint outside of radius should not trigger dedup");
 	}
 
 	@Test
 	void differentDimensionWaypoints() {
 		final var list = new ArrayList<Waypoint>();
-		final var entity = new FakeEntity("DifferentDimensionsTest");
-		final var config = new DedupConfig(list, entity);
+		final var helper = new DedupConfig(list, new FakeEntity("DifferentDimensionsTest"));
 
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		assertTrue(config.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL), "Waypoint in different dimension should not trigger dedup");
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL);
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL);
+		assertTrue(helper.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, Type.NETHER_PORTAL), "Waypoint in different dimension should not trigger dedup");
 	}
 
 	@Test
 	void loopedWaypoints() {
 		final var list = new ArrayList<Waypoint>();
-		final var entity = new FakeEntity("LoopedWaypointsTest");
-		final var config = new DedupConfig(list, entity);
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.END_PORTAL);
+		final var helper = new DedupConfig(list, new FakeEntity("LoopedWaypointsTest"));
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.END_PORTAL);
 
 		int previousSize = list.size();
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		config.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		assertFalse(config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL), "Two-segment-loop should not be added");
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL);
+		helper.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, Type.NETHER_PORTAL);
+		assertFalse(helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL), "Two-segment-loop should not be added");
 		assertEquals(previousSize + 1, list.size(), "Looping should return the working set to previous size (+1)");
 	}
-	//endregion
 
 	@Test
 	void bigLoopedWaypoints() {
 		final var list = new ArrayList<Waypoint>();
-		final var entity = new FakeEntity("LoopedWaypointsTest");
 		final var otherBlockPos = new BlockPos(100, 100, 100);
-		final var config = new DedupConfig(list, entity);
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.END_PORTAL);
+		final var helper = new DedupConfig(list, new FakeEntity("LoopedWaypointsTest"));
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.END_PORTAL);
 
 		int previousSize = list.size();
-		config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		config.addDedupWaypoint(THE_NETHER, otherBlockPos, Waypoint.Type.NETHER_PORTAL);
-		config.addDedupWaypoint(THE_END, otherBlockPos, Waypoint.Type.NETHER_PORTAL);
-		config.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL);
-		assertFalse(config.addDedupWaypoint(THE_END, BlockPos.ZERO, Waypoint.Type.NETHER_PORTAL), "Four-segment-loop should not be added");
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL);
+		helper.addDedupWaypoint(THE_NETHER, otherBlockPos, Type.NETHER_PORTAL);
+		helper.addDedupWaypoint(THE_END, otherBlockPos, Type.NETHER_PORTAL);
+		helper.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, Type.NETHER_PORTAL);
+		assertFalse(helper.addDedupWaypoint(THE_END, BlockPos.ZERO, Type.NETHER_PORTAL), "Four-segment-loop should not be added");
 		assertEquals(previousSize + 1, list.size(), "Looping should return the working set to previous size (+1)");
 	}
 
 	record DedupConfig(List<Waypoint> list, FakeEntity entity) {
-		boolean addDedupWaypoint(ResourceKey<Level> dimension, BlockPos pos, Waypoint.Type type) {
+		boolean addDedupWaypoint(ResourceKey<Level> dimension, BlockPos pos, Type type) {
 			return Deduplication.addDeduplicatedWaypoint(list(), dimension, pos, type, entity());
 		}
 	}
+	//endregion
+
 
 }
