@@ -38,7 +38,7 @@ public class SmartRecoveryCompass extends Item {
 		if(waypoints.getLastDeath().isEmpty()) {
 			return;
 		}
-		tooltip.add(Utils.getText(player).withStyle(style -> style.applyFormats(ChatFormatting.ITALIC, ChatFormatting.DARK_AQUA)));
+		tooltip.add(Component.literal(waypoints.getLastDeath().get(waypoints.getProgress()).translation()).withStyle(style -> style.applyFormats(ChatFormatting.ITALIC, ChatFormatting.DARK_AQUA)));
 	}
 
 	@Override

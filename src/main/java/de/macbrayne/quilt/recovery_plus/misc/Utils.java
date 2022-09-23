@@ -1,6 +1,7 @@
 package de.macbrayne.quilt.recovery_plus.misc;
 
 import de.macbrayne.quilt.recovery_plus.components.Registry;
+import de.macbrayne.quilt.recovery_plus.data.CompassTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -30,18 +31,16 @@ public class Utils {
 
 	}
 
-	public static void announceProgress(ServerPlayer player, Waypoint.Type type) {
+	public static void announceProgress(ServerPlayer player, CompassTrigger type) {
 		((ServerPlayerMixinTimerAccessor) player).recoveryPlus_setTimer(type, 60);
 	}
 
-	public static MutableComponent getText(Player player) {
-		final var waypoints = Registry.WAYPOINTS.get(player);
-		var type = waypoints.getLastDeath().get(waypoints.getLastDeath().size() - 1).type();
-		return getText(type);
+	public static MutableComponent getText(CompassTrigger type) {
+		return getText(type.location().toString());
 	}
 
-	public static MutableComponent getText(Waypoint.Type type) {
-		var destination = Component.translatable("item.recovery_plus.recovery_compass.type." + type.getId());
+	public static MutableComponent getText(String translation) {
+		var destination = Component.translatable("item.recovery_plus.recovery_compass.type." + translation);
 		return Component.translatable("item.recovery_plus.recovery_compass.navigating", destination);
 	}
 }

@@ -1,6 +1,7 @@
 package de.macbrayne.quilt.recovery_plus.mixin;
 
 import de.macbrayne.quilt.recovery_plus.components.Registry;
+import de.macbrayne.quilt.recovery_plus.data.CompassTrigger;
 import de.macbrayne.quilt.recovery_plus.misc.ServerPlayerMixinTimerAccessor;
 import de.macbrayne.quilt.recovery_plus.misc.Utils;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
@@ -17,7 +18,7 @@ public class ServerPlayerMixinTimer implements ServerPlayerMixinTimerAccessor {
 	private int ticksUntilMessageSent;
 
 	@Unique
-	private Waypoint.Type messageType;
+	private CompassTrigger messageType;
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void onTick(CallbackInfo ci) { // Fix parameters as needed
@@ -33,7 +34,7 @@ public class ServerPlayerMixinTimer implements ServerPlayerMixinTimerAccessor {
 
 
 	@Override
-	public void recoveryPlus_setTimer(Waypoint.Type type, int ticksUntilMessageSent) {
+	public void recoveryPlus_setTimer(CompassTrigger type, int ticksUntilMessageSent) {
 		this.ticksUntilMessageSent = ticksUntilMessageSent;
 		this.messageType = type;
 	}

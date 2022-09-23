@@ -1,5 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.mixin.triggers;
 
+import de.macbrayne.quilt.recovery_plus.data.CompassTriggers;
 import de.macbrayne.quilt.recovery_plus.misc.Utils;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import de.macbrayne.quilt.recovery_plus.components.Registry;
@@ -22,10 +23,8 @@ public class TheEndGatewayBlockEntityMixin {
 	@Inject(method = "teleportEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;teleportToWithTicket(DDD)V"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void endGatewayEvent(Level world, BlockPos pos, BlockState state, Entity entity, TheEndGatewayBlockEntity blockEntity, CallbackInfo ci, BlockPos blockPos, Entity entity3) {
 		if(entity3 instanceof ServerPlayer player) {
-			final var serverWorld = (ServerLevel) world;
-			final var waypoints = Registry.WAYPOINTS.get(player);
-			waypoints.addDeduplicatedWaypoint(serverWorld, pos, Waypoint.Type.END_GATEWAY);
-
+			var trigger = CompassTriggers.getTrigger(CompassTriggers.END_GATEWAY);
+			trigger.action().accept(trigger, player, (ServerLevel) world, pos);
 			Utils.doWaypointProgressionAndSync(player, world.dimension(), pos);
 		}
 	}

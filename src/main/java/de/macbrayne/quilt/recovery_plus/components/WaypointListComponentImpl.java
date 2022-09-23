@@ -1,5 +1,7 @@
 package de.macbrayne.quilt.recovery_plus.components;
 
+import de.macbrayne.quilt.recovery_plus.data.CompassTrigger;
+import de.macbrayne.quilt.recovery_plus.data.CompassTriggers;
 import de.macbrayne.quilt.recovery_plus.misc.Deduplication;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -9,6 +11,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -72,7 +75,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 	}
 
 	@Override
-	public boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type) {
+	public boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, CompassTrigger type) {
 		return Deduplication.addDeduplicatedWaypoint(getWorkingCopy(), level.dimension(), pos, type, getProvider());
 	}
 
@@ -88,8 +91,9 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		for (int i = 0; i < listTag.size(); i++) {
 			var compoundTag = listTag.getCompound(i);
 			GlobalPos pos = GlobalPos.of(dimensionFromNbt(compoundTag).get(), new BlockPos(NbtUtils.readBlockPos(compoundTag)));
-			String id = compoundTag.getString("Type");
-			result.add(new Waypoint(pos, Waypoint.Type.fromId(id)));
+			var id = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compoundTag.get("Type")).result().get();
+			String translation = compoundTag.contains("Translation") ? compoundTag.getString("Translation") : "";
+			result.add(new Waypoint(pos, CompassTriggers.getTrigger(id), translation));
 		}
 		return result;
 	}
@@ -105,9 +109,10 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		ListTag listTag = new ListTag();
 		for (var waypoint : list) {
 			var compoundTag = new CompoundTag();
-			compoundTag.putString("Type", waypoint.type().getId());
+			ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, waypoint.type().location()).result().ifPresent(nbt -> compoundTag.put("Type", nbt));
 			compoundTag.merge(NbtUtils.writeBlockPos(waypoint.position().pos()));
 			Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, waypoint.position().dimension()).result().ifPresent(nbt -> compoundTag.put("Dimension", nbt));
+			compoundTag.putString("Translation", waypoint.translation());
 			listTag.add(compoundTag);
 		}
 		return listTag;
@@ -125,11 +130,8 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		if(lossless) {
 			return;
 		}
-		final var oldPos = GlobalPos.of(oldPlayer.level.dimension(), new BlockPos(oldPlayer.position()));
-		getWorkingCopy().add(new Waypoint(oldPos, Waypoint.Type.DEATH));
-		setProgress(0);
-		setLastDeath(getWorkingCopy());
-		setWorkingCopy(new ArrayList<>());
+		var action = CompassTriggers.getTrigger(CompassTriggers.DEATH).action();
+		action.accept(null, (ServerPlayer) this.provider, (ServerLevel) oldPlayer.level, new BlockPos(oldPlayer.position()));
 	}
 
 	private static Optional<ResourceKey<Level>> dimensionFromNbt(CompoundTag nbt) {
@@ -150,7 +152,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 		buf.writeBoolean(false); // 1 Don't reset
 		var sync = this.lastDeath.get(this.progress); // Only sync next destination
 		buf.writeGlobalPos(sync.position()); // 2 destination pos
-		buf.writeUtf(sync.type().getId()); // 3 destination type
+		buf.writeUtf(sync.translation()); // 3 translation
 		LOGGER.debug("Synced " + sync + " to " + recipient.getDisplayName().getString());
 	}
 
@@ -162,12 +164,10 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 			return;
 		}
 		var globalPos = buf.readGlobalPos(); // 2 destination pos
-		var type = buf.readUtf(); // 3 destination type
-		var sync = new Waypoint(globalPos, Waypoint.Type.fromId(type));
+		var type = buf.readUtf(); // 3 translation
+		var sync = new Waypoint(globalPos, null, type);
 		this.lastDeath.clear();
 		this.lastDeath.add(0, sync); // Client only has 0 set!
 		LOGGER.debug("Synced " + sync + " from server");
 	}
-
-
 }

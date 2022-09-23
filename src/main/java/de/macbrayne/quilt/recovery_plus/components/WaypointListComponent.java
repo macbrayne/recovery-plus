@@ -1,5 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.components;
 
+import de.macbrayne.quilt.recovery_plus.data.CompassTrigger;
 import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.core.BlockPos;
@@ -25,5 +26,5 @@ public interface WaypointListComponent extends Component {
 
 	void incrementProgress();
 
-	boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, Waypoint.Type type);
+	boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, CompassTrigger type);
 }

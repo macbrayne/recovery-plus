@@ -1,0 +1,5 @@
+{
+  "trigger": "recovery_plus:manually",
+  "location": null,
+  "action": "recovery_plus:set_working_set"
+}

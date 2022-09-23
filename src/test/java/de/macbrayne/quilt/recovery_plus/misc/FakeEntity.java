@@ -4,14 +4,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
 
 public class FakeEntity implements Nameable {
-	final String name;
+	final Component name;
 
 	public FakeEntity(String name) {
-		this.name = name;
+		this.name = Component.literal(name);
 	}
 
 	@Override
 	public Component getName() {
-		return Component.literal(name);
+		return name;
 	}
 }

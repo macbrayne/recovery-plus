@@ -1,0 +1,4 @@
+{
+  "trigger": "recovery_plus:manually",
+  "action": "recovery_plus:add_to_backlog"
+}

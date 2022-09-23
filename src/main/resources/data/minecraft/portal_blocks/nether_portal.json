@@ -1,0 +1,9 @@
+{
+  "trigger": "recovery_plus:inside_block",
+  "action": "recovery_plus:add_to_backlog",
+  "predicate": {
+    "block": {
+      "blocks": ["minecraft:nether_portal"]
+    }
+  }
+}

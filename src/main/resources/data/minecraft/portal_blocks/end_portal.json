@@ -1,0 +1,9 @@
+{
+  "trigger": "recovery_plus:inside_block",
+  "predicate": {
+    "block": {
+      "blocks": ["minecraft:end_portal"]
+    }
+  },
+  "action": "recovery_plus:add_to_backlog"
+}
