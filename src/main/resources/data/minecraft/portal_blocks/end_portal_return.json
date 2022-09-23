@@ -3,10 +3,8 @@
   "predicate": {
     "block": {
       "blocks": ["minecraft:end_portal"]
-    }
-  },
-  "inverted": {
+    },
     "dimension": "minecraft:the_end"
   },
-  "action": "recovery_plus:add_to_backlog"
+  "action": "recovery_plus:clear_backlog"
 }

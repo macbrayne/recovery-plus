@@ -44,7 +44,7 @@ public enum Action {
 		this.function = function;
 	}
 
-	protected String getId() {
+	private String getId() {
 		return id;
 	}
 

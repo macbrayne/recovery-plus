@@ -7,7 +7,7 @@ import java.util.Map;
 
 public enum Trigger {
 	INSIDE_BLOCK("recovery_plus:inside_block"), MANUALLY("recovery_plus:manually");
-	private String id;
+	private final String id;
 	private static final Map<String, Trigger> LOOKUP = Maps.uniqueIndex(
 			Arrays.asList(Trigger.values()),
 			Trigger::getId
@@ -17,7 +17,7 @@ public enum Trigger {
 		this.id = id;
 	}
 
-	protected String getId() {
+	private String getId() {
 		return id;
 	}
 

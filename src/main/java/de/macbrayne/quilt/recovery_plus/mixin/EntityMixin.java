@@ -3,6 +3,7 @@ package de.macbrayne.quilt.recovery_plus.mixin;
 import de.macbrayne.quilt.recovery_plus.data.CompassTriggers;
 import de.macbrayne.quilt.recovery_plus.data.Trigger;
 import de.macbrayne.quilt.recovery_plus.misc.Utils;
+import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,7 +24,8 @@ public abstract class EntityMixin {
 			for(var id : CompassTriggers.getIds()) {
 				var trigger = CompassTriggers.getTrigger(id);
 				if (trigger.trigger() == Trigger.INSIDE_BLOCK) {
-					if (trigger.predicate().matches(serverLevel, location.x, location.y, location.z)) {
+					if (trigger.predicate().matches(serverLevel, location.x, location.y, location.z) &&
+							(trigger.inverted() == LocationPredicate.ANY || !trigger.inverted().matches(serverLevel, location.x, location.y, location.z))) {
 						trigger.action().accept(trigger, player, (ServerLevel) player.level, new BlockPos(location));
 					}
 				}
