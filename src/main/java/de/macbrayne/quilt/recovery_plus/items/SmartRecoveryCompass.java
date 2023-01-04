@@ -1,7 +1,6 @@
 package de.macbrayne.quilt.recovery_plus.items;
 
 import de.macbrayne.quilt.recovery_plus.components.Registry;
-import de.macbrayne.quilt.recovery_plus.misc.Utils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -9,6 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -49,7 +49,7 @@ public class SmartRecoveryCompass extends Item {
 	@Override
 	protected String getOrCreateDescriptionId() {
 		if (this.descriptionId == null) {
-			this.descriptionId = Util.makeDescriptionId("item", net.minecraft.core.Registry.ITEM.getKey(Items.RECOVERY_COMPASS));
+			this.descriptionId = Util.makeDescriptionId("item", BuiltInRegistries.ITEM.getKey(Items.RECOVERY_COMPASS));
 		}
 
 		return this.descriptionId;

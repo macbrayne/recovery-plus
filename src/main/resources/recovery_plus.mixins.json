@@ -6,7 +6,8 @@
   "mixins": [
     "EntityMixin",
     "EntityAccessor",
-    "ServerPlayerMixinTimer"
+    "ServerPlayerMixinTimer",
+    "triggers.TheEndGatewayBlockEntityMixin"
   ],
   "client": [],
   "injectors": {
