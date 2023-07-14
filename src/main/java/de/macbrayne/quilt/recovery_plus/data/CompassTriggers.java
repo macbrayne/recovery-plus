@@ -20,6 +20,7 @@ public class CompassTriggers extends SimpleJsonResourceReloadListener implements
 	private static final ResourceLocation FABRIC_ID = new ResourceLocation("recovery_plus", "compass_triggers");
 	public static final ResourceLocation  DEATH = new ResourceLocation("minecraft", "death");
 	public static final ResourceLocation END_GATEWAY = new ResourceLocation("minecraft", "end_gateway");
+	public static final ResourceLocation NETHER_PORTAL = new ResourceLocation("minecraft", "nether_portal");
 
 	private static final Map<ResourceLocation, CompassTrigger> PORTAL_TRIGGERS = new HashMap<>();
 	public CompassTriggers() {
