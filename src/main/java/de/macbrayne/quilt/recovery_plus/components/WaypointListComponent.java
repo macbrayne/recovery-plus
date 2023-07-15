@@ -26,5 +26,5 @@ public interface WaypointListComponent extends Component {
 
 	void incrementProgress();
 
-	boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, CompassTrigger type);
+	boolean addDeduplicatedWaypoint(ServerLevel level, BlockPos pos, ServerLevel target, BlockPos targetPos, CompassTrigger type);
 }

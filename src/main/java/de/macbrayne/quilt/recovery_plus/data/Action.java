@@ -14,28 +14,31 @@ import java.util.Arrays;
 import java.util.Map;
 
 public enum Action {
-	ADD_TO_BACKLOG("recovery_plus:add_to_backlog", (trigger, player, level, location) -> {
+	ADD_TO_BACKLOG("recovery_plus:add_to_backlog", (trigger, player, level, location, targetLevel, targetLocation) -> {
 
 		if(isDebug()) {
 			player.sendSystemMessage(Component.literal("Current Waypoint Backlog: " + Registry.WAYPOINTS.get(player).getWorkingCopy()));
-			player.sendSystemMessage(Component.literal("Waypoint to add: " + new Waypoint(GlobalPos.of(level.dimension(), location), trigger, "")));
+			GlobalPos source = GlobalPos.of(level.dimension(), location);
+			GlobalPos destination = GlobalPos.of(targetLevel.dimension(), targetLocation);
+			player.sendSystemMessage(Component.literal("Waypoint to add: " + new Waypoint(source, destination, trigger, "")));
 		}
-		Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint(level, location, trigger);
-	}), CLEAR_BACKLOG("recovery_plus:clear_backlog", (trigger, player, level, location) -> {
+		Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint(level, location, targetLevel, targetLocation, trigger);
+	}), CLEAR_BACKLOG("recovery_plus:clear_backlog", (trigger, player, level, location, targetLevel, targetLocation) -> {
 
 		if(isDebug()) {
 			player.sendSystemMessage(Component.literal("Current Waypoint Backlog: " + Registry.WAYPOINTS.get(player).getWorkingCopy()));
 			player.sendSystemMessage(Component.literal("Cleared backlog"));
 		}
 		Registry.WAYPOINTS.get(player).getWorkingCopy().clear();
-	}), ON_DEATH("recovery_plus:set_working_set", (trigger, player, level, location) -> {
+	}), ON_DEATH("recovery_plus:set_working_set", (trigger, player, level, location, targetLevel, targetLocation) -> {
 		if(isDebug()) {
 			player.sendSystemMessage(Component.literal("Player Died"));
 			player.sendSystemMessage(Component.literal("Current Waypoint Backlog: " + Registry.WAYPOINTS.get(player).getWorkingCopy()));
-			player.sendSystemMessage(Component.literal("Waypoint to add: " + new Waypoint(GlobalPos.of(level.dimension(), location), trigger, "")));
+			GlobalPos source = GlobalPos.of(level.dimension(), location);
+			player.sendSystemMessage(Component.literal("Waypoint to add: " + new Waypoint(source, null, trigger, "")));
 		}
 		var waypoints = Registry.WAYPOINTS.get(player);
-		waypoints.addDeduplicatedWaypoint(level, location, CompassTriggers.getTrigger(CompassTriggers.DEATH));
+		waypoints.addDeduplicatedWaypoint(level, location, null, null, CompassTriggers.getTrigger(CompassTriggers.DEATH));
 		waypoints.setProgress(0);
 		waypoints.setLastDeath(waypoints.getWorkingCopy());
 		waypoints.setWorkingCopy(new ArrayList<>());
@@ -57,8 +60,8 @@ public enum Action {
 		return id;
 	}
 
-	public void accept(CompassTrigger compassTrigger, ServerPlayer serverPlayer, ServerLevel dimension, BlockPos location) {
-		function.accept(compassTrigger, serverPlayer, dimension, location);
+	public void accept(CompassTrigger compassTrigger, ServerPlayer serverPlayer, ServerLevel level, BlockPos location, ServerLevel targetDimension, BlockPos targetLocation) {
+		function.accept(compassTrigger, serverPlayer, level, location, targetDimension, targetLocation);
 	}
 
 	static Action getActionFromId(String id) {
@@ -66,7 +69,7 @@ public enum Action {
 	}
 
 	public interface Config {
-		void accept(CompassTrigger trigger, ServerPlayer player, ServerLevel dimension, BlockPos location);
+		void accept(CompassTrigger trigger, ServerPlayer player, ServerLevel level, BlockPos location, ServerLevel targetLevel, BlockPos targetLocation);
 	}
 
 	public static boolean isDebug() {

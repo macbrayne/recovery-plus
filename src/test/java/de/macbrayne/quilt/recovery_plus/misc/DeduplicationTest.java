@@ -36,7 +36,7 @@ public class DeduplicationTest {
 		THE_END = ResourceKey.create(DIMENSION_REGISTRY, new ResourceLocation("the_end"));
 		THE_NETHER = ResourceKey.create(DIMENSION_REGISTRY, new ResourceLocation("the_nether"));
 
-		NETHER_PORTAL = new CompassTrigger(new ResourceLocation("minecraft:nether_portal"), Trigger.INSIDE_BLOCK, LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(Blocks.NETHER_PORTAL).build()).build(), null, Action.ADD_TO_BACKLOG);
+		NETHER_PORTAL = new CompassTrigger(new ResourceLocation("minecraft:nether_portal"), Trigger.MANUALLY, LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(Blocks.NETHER_PORTAL).build()).build(), null, Action.ADD_TO_BACKLOG);
 		END_GATEWAY = new CompassTrigger(new ResourceLocation("minecraft:end_gateway"), Trigger.MANUALLY, LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(Blocks.END_GATEWAY).build()).build(), null, Action.ADD_TO_BACKLOG);
 		END_PORTAL = new CompassTrigger(new ResourceLocation("minecraft:end_portal"), Trigger.INSIDE_BLOCK, LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(Blocks.END_PORTAL).build()).build(), null, Action.ADD_TO_BACKLOG);
 	}
@@ -105,7 +105,10 @@ public class DeduplicationTest {
 
 	record DedupConfig(List<Waypoint> list, FakeEntity entity) {
 		boolean addDedupWaypoint(ResourceKey<Level> dimension, BlockPos pos, CompassTrigger type) {
-			return Deduplication.addDeduplicatedWaypoint(list(), dimension, pos, type, entity());
+			return addDedupWaypoint(dimension, pos, null, null, type);
+		}
+		boolean addDedupWaypoint(ResourceKey<Level> dimension, BlockPos pos, ResourceKey<Level> targetDimension, BlockPos targetPos, CompassTrigger type) {
+			return Deduplication.addDeduplicatedWaypoint(list(), dimension, pos, null, null, type, entity());
 		}
 	}
 	//endregion

@@ -15,8 +15,8 @@ import java.util.List;
 
 public class Deduplication {
 	public static final Logger LOGGER = LoggerFactory.getLogger("recovery_plus");
-	public static boolean addDeduplicatedWaypoint(List<Waypoint> current, ResourceKey<Level> dimension, BlockPos pos, CompassTrigger type, Nameable provider) {
-		final var toAdd = new Waypoint(GlobalPos.of(dimension, pos), type, Utils.getText(type).getString());
+	public static boolean addDeduplicatedWaypoint(List<Waypoint> current, ResourceKey<Level> dimension, BlockPos pos, ResourceKey<Level> targetDimension, BlockPos targetPos, CompassTrigger type, Nameable provider) {
+		final var toAdd = new Waypoint(GlobalPos.of(dimension, pos), GlobalPos.of(targetDimension, targetPos), type, Utils.getText(type).getString());
 		LOGGER.debug("Try adding " + toAdd + " to " + provider.getDisplayName().getString() + "'s working set:");
 		if(current.size() >= 1 && doWaypointsMatch(current.get(current.size() - 1), toAdd)) {
 			LOGGER.debug("Failed, multiple hits of the same portal");
@@ -48,6 +48,6 @@ public class Deduplication {
 	}
 
 	public static boolean doWaypointsMatch(Waypoint one, Waypoint theOther) {
-		return one.equals(theOther) || (one.isWaypointWithinRangeOf(theOther.position().dimension(), theOther.position().pos(), 5) && one.type() == theOther.type());
+		return one.equals(theOther) || (one.isWaypointWithinRangeOf(theOther, 5) && one.type() == theOther.type());
 	}
 }

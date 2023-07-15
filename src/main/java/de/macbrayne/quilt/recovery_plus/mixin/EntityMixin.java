@@ -40,7 +40,7 @@ public abstract class EntityMixin {
 					}
 					if (trigger.predicate().matches(serverLevel, location.x, location.y, location.z) &&
 							(trigger.inverted() == LocationPredicate.ANY || !trigger.inverted().matches(serverLevel, location.x, location.y, location.z))) {
-						trigger.action().accept(trigger, player, (ServerLevel) player.level, new BlockPos(location));
+						trigger.action().accept(trigger, player, (ServerLevel) player.level, new BlockPos(location), null, null);
 					}
 				}
 			}
