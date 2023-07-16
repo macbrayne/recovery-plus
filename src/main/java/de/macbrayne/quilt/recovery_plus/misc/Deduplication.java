@@ -1,12 +1,10 @@
 package de.macbrayne.quilt.recovery_plus.misc;
 
-import de.macbrayne.quilt.recovery_plus.components.WaypointListComponentImpl;
 import de.macbrayne.quilt.recovery_plus.data.CompassTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

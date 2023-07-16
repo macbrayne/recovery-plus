@@ -5,11 +5,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public record CompassTrigger(ResourceLocation location, Trigger trigger, LocationPredicate predicate, LocationPredicate inverted, Action action) {
-	public static final Logger LOGGER = LoggerFactory.getLogger("recovery_plus");
 	public static CompassTrigger fromJson(ResourceLocation location, JsonElement json) {
 		if (json != null && !json.isJsonNull()) {
 			JsonObject jsonObject = GsonHelper.convertToJsonObject(json, "compass trigger");

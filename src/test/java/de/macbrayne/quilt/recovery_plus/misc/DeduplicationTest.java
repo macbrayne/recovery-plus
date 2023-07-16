@@ -110,8 +110,8 @@ public class DeduplicationTest {
 		final var otherBlockPos = new BlockPos(100, 100, 100);
 		final var helper = new DedupConfig(list, new FakeEntity("ReturnThroughPortal"));
 
-		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, THE_NETHER, BlockPos.ZERO, NETHER_PORTAL);
-		assertFalse(helper.addDedupWaypoint(THE_NETHER, BlockPos.ZERO, THE_END, BlockPos.ZERO, NETHER_PORTAL), "Waypoints with target set should match ");
+		helper.addDedupWaypoint(THE_END, BlockPos.ZERO, THE_NETHER, otherBlockPos, NETHER_PORTAL);
+		assertFalse(helper.addDedupWaypoint(THE_NETHER, otherBlockPos, THE_END, BlockPos.ZERO, NETHER_PORTAL), "Waypoints with target set should match ");
 		assertEquals(0, list.size(), "Loop should be removed");
 	}
 

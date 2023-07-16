@@ -4,7 +4,6 @@ import de.macbrayne.quilt.recovery_plus.components.Registry;
 import de.macbrayne.quilt.recovery_plus.data.CompassTrigger;
 import de.macbrayne.quilt.recovery_plus.misc.ServerPlayerMixinTimerAccessor;
 import de.macbrayne.quilt.recovery_plus.misc.Utils;
-import de.macbrayne.quilt.recovery_plus.misc.Waypoint;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

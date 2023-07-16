@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(net.minecraft.world.entity.Entity.class)
 public abstract class EntityHandleNetherPortalMixin {
 	@Inject(method = "handleNetherPortal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;changeDimension(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/entity/Entity;"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void netherPortalEvent(CallbackInfo ci, int i, ServerLevel serverLevel, MinecraftServer minecraftServer, ResourceKey resourceKey, ServerLevel serverLevel2) {
+	private void netherPortalEvent(CallbackInfo ci, int i, ServerLevel serverLevel, MinecraftServer minecraftServer, ResourceKey<Level> resourceKey, ServerLevel serverLevel2) {
 		if((Entity) (Object) this instanceof ServerPlayer player) {
 			var trigger = CompassTriggers.getTrigger(CompassTriggers.NETHER_PORTAL);
 			final var entity = (EntityAccessor) this;

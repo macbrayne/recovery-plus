@@ -95,9 +95,13 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 			var compoundTag = listTag.getCompound(i);
 			GlobalPos pos = decodeGlobalPos(compoundTag);
 			GlobalPos destination = decodeGlobalPos(compoundTag.getCompound("Target"));
-			var id = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compoundTag.get("Type")).result().get();
+			var id = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compoundTag.get("Type")).result();
+			if(id.isEmpty()) {
+				LOGGER.error("Invalid resource location " + compoundTag.get("Type") + " - skipping entry");
+				continue;
+			}
 			String translation = compoundTag.contains("Translation") ? compoundTag.getString("Translation") : "";
-			result.add(new Waypoint(pos, destination, CompassTriggers.getTrigger(id), translation));
+			result.add(new Waypoint(pos, destination, CompassTriggers.getTrigger(id.get()), translation));
 		}
 		return result;
 	}
@@ -161,10 +165,6 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 
 	private static Optional<ResourceKey<Level>> dimensionFromNbt(CompoundTag nbt) {
 		return Level.RESOURCE_KEY_CODEC.parse(NbtOps.INSTANCE, nbt.get("Dimension")).result();
-	}
-
-	private static Optional<ResourceKey<Level>> targetDimensionFromNbt(CompoundTag nbt) {
-		return Level.RESOURCE_KEY_CODEC.parse(NbtOps.INSTANCE, nbt.get("TargetDimension")).result();
 	}
 
 	@Override
