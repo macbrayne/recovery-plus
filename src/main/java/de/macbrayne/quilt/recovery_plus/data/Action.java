@@ -19,7 +19,7 @@ public enum Action {
 		if(isDebug()) {
 			player.sendSystemMessage(Component.literal("Current Waypoint Backlog: " + Registry.WAYPOINTS.get(player).getWorkingCopy()));
 			GlobalPos source = GlobalPos.of(level.dimension(), location);
-			GlobalPos destination = GlobalPos.of(targetLevel.dimension(), targetLocation);
+			GlobalPos destination = GlobalPos.of(targetLevel == null ? null : targetLevel.dimension(), targetLocation);
 			player.sendSystemMessage(Component.literal("Waypoint to add: " + new Waypoint(source, destination, trigger, "")));
 		}
 		Registry.WAYPOINTS.get(player).addDeduplicatedWaypoint(level, location, targetLevel, targetLocation, trigger);

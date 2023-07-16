@@ -14,10 +14,19 @@ import java.util.Map;
 
 public record Waypoint(GlobalPos position, GlobalPos target, CompassTrigger type, String translation) {
 	public boolean isWaypointWithinRangeOf(Waypoint waypoint, double distance) {
-		return isWaypointWithinRangeOf(waypoint.position().dimension(), waypoint.position().pos(), distance);
+		boolean targetsMatch = target() != null && waypoint.target() != null ? doTargetsOverlap(waypoint, distance) : true;
+		return isWaypointWithinRangeOf(waypoint.position().dimension(), waypoint.position().pos(), distance) && targetsMatch;
 	}
 
 	public boolean isWaypointWithinRangeOf(ResourceKey<Level> dimension, BlockPos pos, double distance) {
 		return position().dimension() == dimension && position().pos().closerThan(pos, distance);
+	}
+
+	public boolean doTargetsOverlap(Waypoint waypoint, double distance) {
+		if(target != null && waypoint.target != null) {
+			return isWaypointWithinRangeOf(waypoint.target().dimension(), waypoint.target().pos(), distance) ||
+				waypoint.isWaypointWithinRangeOf(target().dimension(), target().pos(), distance);
+		}
+		return false;
 	}
 }

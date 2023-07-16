@@ -22,6 +22,11 @@ public class Deduplication {
 			LOGGER.debug("Failed, multiple hits of the same portal");
 			return false; // Multiple hits of same portal
 		}
+		if(current.size() >= 1 && doTargetsOverlap(current.get(current.size() - 1), toAdd)) {
+			current.remove(current.size() - 1);
+			LOGGER.debug("Failed, target overlaps with position; new length of working set: " + current.size() + "; removed 1 entry");
+			return false;
+		}
 		if(current.size() >= 2 && doWaypointsMatch(current.get(current.size() - 2), toAdd)) {
 			current.remove(current.size() - 1);
 			current.remove(current.size() - 1);
@@ -49,5 +54,10 @@ public class Deduplication {
 
 	public static boolean doWaypointsMatch(Waypoint one, Waypoint theOther) {
 		return one.equals(theOther) || (one.isWaypointWithinRangeOf(theOther, 5) && one.type() == theOther.type());
+	}
+
+	public static boolean doTargetsOverlap(Waypoint one, Waypoint theOther) {
+		return one.type() == theOther.type() && (one.target().equals(theOther.position()) || theOther.target().equals(one.position())
+			|| one.doTargetsOverlap(theOther, 5));
 	}
 }
