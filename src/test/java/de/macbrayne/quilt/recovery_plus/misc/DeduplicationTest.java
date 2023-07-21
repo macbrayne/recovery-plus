@@ -31,7 +31,6 @@ public class DeduplicationTest {
 	public DeduplicationTest() {
 		SharedConstants.tryDetectVersion();
 		Bootstrap.bootStrap();
-		Bootstrap.validate();
 		DIMENSION_REGISTRY = ResourceKey.createRegistryKey(new ResourceLocation("dimension"));
 		THE_END = ResourceKey.create(DIMENSION_REGISTRY, new ResourceLocation("the_end"));
 		THE_NETHER = ResourceKey.create(DIMENSION_REGISTRY, new ResourceLocation("the_nether"));

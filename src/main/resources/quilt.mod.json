@@ -19,8 +19,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "de.macbrayne.quilt.recovery_plus.RecoveryPlus",
-			"client_init": "de.macbrayne.quilt.recovery_plus.client.RecoveryPlusClient",
+			"main": "de.macbrayne.quilt.recovery_plus.RecoveryPlus",
+			"client": "de.macbrayne.quilt.recovery_plus.client.RecoveryPlusClient",
 			"cardinal-components": "de.macbrayne.quilt.recovery_plus.components.Registry"
 		},
 		"depends": [
