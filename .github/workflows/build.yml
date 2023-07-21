@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: ✨ Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 🛂 Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -53,7 +53,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: 🤗 Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       - name: ❗ Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -69,7 +69,7 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
 
       - name: 📦 Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always() # always run even if the previous step fails
         with:
           name: artifacts
