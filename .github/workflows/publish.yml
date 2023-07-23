@@ -36,19 +36,19 @@ jobs:
           distribution: adopt
 
       - name: 🤗 Setup Gradle and build artifacts
-        uses: gradle/gradle-build-action
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: build
 
       - name: 📢 Publish artifacts to Modrinth
         continue-on-error: true
-        uses: gradle/gradle-build-action
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: modrinth
 
       - name: 📢 Publish artifacts to Modrinth
         continue-on-error: true
-        uses: gradle/gradle-build-action
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: curseforge
 
