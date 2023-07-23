@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "recovery_plus",
+  "version": "${version}",
+  "name": "Recovery Plus",
+  "description": "A smarter recovery compass with waypoints",
+  "authors": [
+    "macbrayne"
+  ],
+  "contact": {
+    "issues": "https://github.com/macbrayne/recovery-plus/issues",
+    "sources": "https://github.com/macbrayne/recovery-plus"
+  },
+  "icon": "assets/recovery_plus/icon.png",
+  "license": "EUPL-1.2",
+  "entrypoints": {
+    "main": [
+      "de.macbrayne.quilt.recovery_plus.RecoveryPlus"
+    ],
+    "client": [
+      "de.macbrayne.quilt.recovery_plus.client.RecoveryPlusClient"
+    ],
+    "cardinal-components": [
+      "de.macbrayne.quilt.recovery_plus.components.Registry"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "custom": {
+    "cardinal-components": [
+      "recovery_plus:waypoints"
+    ]
+  },
+  "mixins": [
+    "recovery_plus.mixins.json"
+  ]
+}
