@@ -53,7 +53,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: 🤗 Setup Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/gradle-build-action@v2
 
       - name: ❗ Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -63,7 +63,7 @@ jobs:
 
 
       - name: 🐱‍💻 Publish Test Report
-        uses: mikepenz/action-junit-report@v3
+        uses: mikepenz/action-junit-report@v2
         if: always() # always run even if the previous step fails
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
