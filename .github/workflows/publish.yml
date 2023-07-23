@@ -1,36 +1,26 @@
 # Builds and tests the project
 
-name: Build
+name: Publish
 
 # On pull requests
 on:
-  push:
-    paths:
-      - '**/src/**'
-      - '**/libs.versions.toml'
-      - '**/build.gradle'
-      - '**/gradle.properties'
-      - '**/settings.gradle'
-      - .github/workflows/build.yml
-      - LICENCE
-  pull_request:
-    paths:
-      - '**/src/**'
-      - '**/libs.versions.toml'
-      - '**/build.gradle'
-      - '**/gradle.properties'
-      - '**/settings.gradle'
-      - .github/workflows/build.yml
-      - LICENCE
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
-  build:
-    name: Build
-    strategy:
-      matrix:
-        gradle-version: [wrapper, current]
+  publish:
+    name: Publish
 
     runs-on: ubuntu-latest
+
+    env: # Or as an environment variable
+      MODRINTH: ${{ secrets.MODRINTH }}
+      CURSEFORGE: ${{ secrets.CURSEFORGE }}
+      CHANGELOG: ${{ github.event.release.body }}
 
     steps:
       - name: ✨ Checkout repository
@@ -46,10 +36,22 @@ jobs:
           distribution: adopt
 
       - name: 🤗 Setup Gradle and build artifacts
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@dependency-graph
         with:
-          gradle-version: ${{ matrix.gradle-version }}
-          arguments: build test
+          arguments: build
+          dependency-graph: generate-and-submit
+
+      - name: 📢 Publish artifacts to Modrinth
+        continue-on-error: true
+        uses: gradle/gradle-build-action@dependency-graph
+        with:
+          arguments: modrinth
+
+      - name: 📢 Publish artifacts to Modrinth
+        continue-on-error: true
+        uses: gradle/gradle-build-action@dependency-graph
+        with:
+          arguments: curseforge
 
       - name: 🐱‍💻 Publish Test Report
         uses: mikepenz/action-junit-report@v2
