@@ -8,9 +8,11 @@ plugins {
 	alias(libs.plugins.minotaur)
 }
 
-archivesBaseName = project.archives_base_name
-version = project.version
-group = project.maven_group
+base {
+	archivesBaseName = project.archives_base_name
+	version = project.version
+	group = project.maven_group
+}
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -47,6 +49,7 @@ dependencies {
 
 	testImplementation(platform('org.junit:junit-bom:5.9.0'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 

@@ -28,7 +28,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        gradle-version: [wrapper, current]
+        gradle-version: [wrapper, release-candidate]
 
     runs-on: ubuntu-latest
 
