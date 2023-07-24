@@ -145,7 +145,7 @@ public class WaypointListComponentImpl implements WaypointListComponent, AutoSyn
 			return;
 		}
 		var action = CompassTriggers.getTrigger(CompassTriggers.DEATH).action();
-		action.accept(null, (ServerPlayer) this.provider, (ServerLevel) oldPlayer.level, new BlockPos(oldPlayer.position()), null, null);
+		action.accept(null, (ServerPlayer) this.provider, (ServerLevel) oldPlayer.level(), BlockPos.containing(oldPlayer.position()), null, null);
 	}
 
 	private static void mergeGlobalPos(CompoundTag tag, GlobalPos pos) {

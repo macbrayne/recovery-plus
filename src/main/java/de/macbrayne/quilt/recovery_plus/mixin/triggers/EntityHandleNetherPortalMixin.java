@@ -24,7 +24,7 @@ public abstract class EntityHandleNetherPortalMixin {
 			var trigger = CompassTriggers.getTrigger(CompassTriggers.NETHER_PORTAL);
 			final var entity = (EntityAccessor) this;
 
-			BlockPos targetPos = new BlockPos(entity.invokeFindDimensionEntryPoint(serverLevel2).pos);
+			BlockPos targetPos = BlockPos.containing(entity.invokeFindDimensionEntryPoint(serverLevel2).pos);
 			trigger.action().accept(trigger, player, serverLevel, entity.getPortalEntrancePos(), serverLevel2, targetPos);
 			Utils.doWaypointProgressionAndSync(player, serverLevel.dimension(), entity.getPortalEntrancePos());
 		}

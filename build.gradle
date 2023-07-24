@@ -2,7 +2,8 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 plugins {
 	id 'maven-publish'
-	alias(libs.plugins.quilt.loom)
+	alias(libs.plugins.fabric.loom)
+	alias(libs.plugins.loom.vineflower)
 	alias(libs.plugins.curseforge.gradle)
 	alias(libs.plugins.minotaur)
 }
@@ -19,6 +20,11 @@ repositories {
 	// for more information about repositories.
 
 	maven {
+		name = 'Quilt'
+		url = 'https://maven.quiltmc.org/repository/release'
+	}
+
+	maven {
 		name = "Ladysnake Mods"
 		url = 'https://maven.ladysnake.org/releases'
 	}
@@ -32,12 +38,9 @@ dependencies {
 		mappings "org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:intermediary-v2"
 		officialMojangMappings()
 	}
-	modImplementation libs.quilt.loader
 
-	// QSL is not a complete API; You will need Quilted Fabric API to fill in the gaps.
-	// Quilted Fabric API will automatically pull in the correct QSL version.
 	modImplementation libs.fabric.api
-	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
+
 	modImplementation libs.bundles.cardinal.components.api
 	include libs.bundles.cardinal.components.api
 
@@ -104,6 +107,13 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+configurations.configureEach {
+	resolutionStrategy.eachDependency {
+		if (requested.module.name == "fabric-loader") {
+			useVersion(libs.versions.fabric.loader.get())
+		}
 	}
 }
 

@@ -1,17 +1,17 @@
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
-minecraft = "1.19.3"
-quilt_mappings = "1.19.3+build.23"
-quilt_loader = "0.18.1-beta.25"
+minecraft = "1.20"
+fabric_loader = "0.14.21"
+quilt_mappings = "1.20+build.4"
 
-fabric_api = "0.68.1+1.19.3"
+fabric_api = "0.83.0+1.20"
 
-cardinal_components_api = "5.1.0"
+cardinal_components_api = "5.2.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
-quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
+fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 
@@ -23,6 +23,7 @@ cardinal_components_api_entity = { module = "dev.onyxstudios.cardinal-components
 cardinal_components_api = ["cardinal_components_api_base", "cardinal_components_api_entity"]
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version = "1.+" }
+fabric_loom = { id = "fabric-loom", version = "1.+" }
+loom_vineflower = { id = "io.github.juuxel.loom-vineflower", version = "1.11.0"}
 curseforge_gradle = { id = "net.darkhax.curseforgegradle", version = "1.1.+"}
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }

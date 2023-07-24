@@ -35,11 +35,11 @@ public abstract class EntityMixin {
 				var trigger = CompassTriggers.getTrigger(id);
 				if (trigger.trigger() == Trigger.INSIDE_BLOCK) {
 					if(debug) {
-						sendSystemMessage(Component.literal("Trigger: INSIDE_BLOCK, Block Pos: " + location + ", Predicate Matches: " + trigger.predicate().matches(serverLevel, location.x, location.y, location.z) + ", Block: " + player.level.getBlockState(player.getOnPos())).withStyle(ChatFormatting.AQUA));
+						sendSystemMessage(Component.literal("Trigger: INSIDE_BLOCK, Block Pos: " + location + ", Predicate Matches: " + trigger.predicate().matches(serverLevel, location.x, location.y, location.z) + ", Block: " + player.level().getBlockState(player.getOnPos())).withStyle(ChatFormatting.AQUA));
 					}
 					if (trigger.predicate().matches(serverLevel, location.x, location.y, location.z) &&
 							(trigger.inverted() == LocationPredicate.ANY || !trigger.inverted().matches(serverLevel, location.x, location.y, location.z))) {
-						trigger.action().accept(trigger, player, (ServerLevel) player.level, new BlockPos(location), null, null);
+						trigger.action().accept(trigger, player, (ServerLevel) player.level(), BlockPos.containing(location), null, null);
 					}
 				}
 			}
