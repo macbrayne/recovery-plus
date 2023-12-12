@@ -24,6 +24,5 @@ cardinal_components_api = ["cardinal_components_api_base", "cardinal_components_
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version = "1.+" }
-loom_vineflower = { id = "io.github.juuxel.loom-vineflower", version = "1.11.0"}
 curseforge_gradle = { id = "net.darkhax.curseforgegradle", version = "1.1.+"}
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }

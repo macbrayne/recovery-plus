@@ -3,7 +3,6 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 plugins {
 	id 'maven-publish'
 	alias(libs.plugins.fabric.loom)
-	alias(libs.plugins.loom.vineflower)
 	alias(libs.plugins.curseforge.gradle)
 	alias(libs.plugins.minotaur)
 }
